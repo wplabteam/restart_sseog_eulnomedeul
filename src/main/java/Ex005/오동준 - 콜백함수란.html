@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+
+    /* 콜백함수란?
+     * 콜백함수는 간단하게 다른 함수에 매개변수로 넘겨준 함수를 말한다.
+     * 매개변수로 넘겨받은 함수는 일단 넘겨받고, 때가 되면 나중에 호출(called back) 한다는 것이 콜백함수의 개념이다.
+    * */
+
+    function checkGang(count, link, good){
+        count < 3 ? link() : good();
+    }
+
+    function linkGang(){
+        console.log("1일 3깡은 기본입니다.  아래 링크를 통해 깡을 시청해주세요");
+        console.log("https://youtu.be/xqFvYsy4wE4");
+    }
+    function goodGang(){
+        console.log("오늘도 깡을 시청해주셔서 감사합니다.");
+    }
+    checkGang(2, linkGang, goodGang);
+</script>
+</body>
+</html>

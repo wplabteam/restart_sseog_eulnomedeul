@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /**
+     * Promise 란 ?
+     * - 프로미스는 자바스크립트 비동기 처리에 사용되는 객체
+     *
+     *
+     *  비동기 처리란 ?
+     * - 비동기 처리란 어떤 코드의 실행이 완료될 때까지 코드의 실행을 멈추지 않고 다음 코드를 먼저 수행하는 자바스크립트의 특성을 의미한다.
+     *
+     * Promise 왜 필요한가 ?
+     * - 비동기 처리를 할 때 콜백함수를 사용하게 되는데, 이러한 콜백함수는 콜백지옥이라는 문제점이 있다.
+     * - 콜백지옥은 콜백함수 안에 또 다른 콜백함수가 들어가는 형태로 코드의 가독성이 떨어지고, 유지보수가 어려워진다.
+     * - 이러한 문제점을 해결하기 위해 ES6에서 Promise가 도입되었다.
+     *
+     * 프로미스의 3가지 상태 states
+     *  - pending : 비동기 처리 로직이 아직 완료되지 않은 상태
+     *  - fulfilled : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
+     *   - rejected : 비동기 처리가 실패하거나 오류가 발생한 상태
+     * */
+
+
+
+
+    /**
+     * 예제 1 - Promise 기본 (간단한 ajax 통신 코드입니다.)
+     * 참고 : https://joshua1988.github.io/web-development/javascript/promise-for-beginners/
+     */
+
+    // function getData(callbackFunc) {
+    //     $.get('url 주소/products/1', function (response) {
+    //         callbackFunc(response); // 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨준다.
+    //     });
+    // }
+
+    //위 코드는 jquery 의 ajax 통신 API를 이용하여 지정된 url에서 1번 상품 데이터를 받아오는 코드입니다.
+    //비동기 처리를 위해 프로미스 대신에 콜백 함수를 사용했습니다.
+
+    // getData(function (tableData) {
+    //     console.log(tableData); // $.get() 함수가 비동기로 작동하기 때문에, getData() 함수가 끝나기 전에 console.log(tableData)가 먼저 실행된다.
+    // });
+
+    // 위 코드에 프로미스를 적용하면 아래와 같은 코드가 됩니다.
+    function getData(callback) {
+        // new Promise() 추가
+        return new Promise(function(resolve, reject) {
+            $.get('url 주소/products/1', function(response) {
+                // 데이터를 받으면 resolve() 호출
+                resolve(response);
+            });
+        });
+    }
+    // getData()의 실행이 끝나면 호출되는 then()
+    getData().then(function(tableData) {
+        // resolve()의 결과 값이 여기로 전달됨
+        console.log(tableData); // $.get()의 reponse 값이 tableData에 전달됨
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

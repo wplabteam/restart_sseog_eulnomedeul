@@ -69,6 +69,7 @@
     <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="4">공복
 
     <button type="button" id="save_button">혈당 체크</button>
+    <button type="button" id="list_button">목록</button>
 </form>
 </body>
 </html>
@@ -89,6 +90,9 @@
             .catch(error => {
                 console.error(error);
             });
+    })
 
+    document.getElementById("list_button").addEventListener("click", () => {
+        location.href = '/blood/list';
     })
 </script>

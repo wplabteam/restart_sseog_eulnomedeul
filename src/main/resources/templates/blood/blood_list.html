@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>테이블 리스트</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>테이블 리스트</h1>
+<table>
+  <thead>
+  <tr>
+    <th>송다운</th>
+    <th>오동준</th>
+    <th>이용호</th>
+    <th>강수림</th>
+    <th>등록일</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="list : ${list}">
+    <td th:text="${list.song}">홍길동</td>
+    <td th:text="${list.oh}">hong@gmail.com</td>
+    <td th:text="${list.lee}">010-1234-5678</td>
+    <td th:text="${list.kang}">hong@gmail.com</td>
+    <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd hh:mm:ss')}">hong@gmail.com</td>
+  </tr>
+  </tbody>
+</table>
+<div class="btn_area align_r mt20">
+  <a href="./write" class="btn btn_yellow"><span>등록</span></a>
+</div>
+</body>
+</html>

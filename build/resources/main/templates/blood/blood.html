@@ -4,24 +4,70 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-left: 5px;
+    }
+
+    button[type="button"] {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    button[type="button"]:hover {
+        background-color: #3e8e41;
+    }
+</style>
 <body>
 <form method="POST" id="frmForm" name="frmForm">
     <label>
         송다운
-        <input type="text" name="song">
+        <input type="text" name="song" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
     </label>
+    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="Y">공복
     <label>
         오동준
-        <input type="text" name="dong">
+        <input type="text" name="oh" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+
     </label>
+    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="2">공복
     <label>
         이용호
-        <input type="text" name="lee">
+        <input type="text" name="lee" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+
     </label>
+    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="2">공복
     <label>
         강수림
-        <input type="text" name="kang">
+        <input type="text" name="kang" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
     </label>
+    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="4">공복
+
     <button type="button" id="save_button">혈당 체크</button>
 </form>
 </body>
@@ -35,7 +81,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                if(data.code === 200) {
+                    alert("저장!")
+                }
             })
             .catch(error => {
                 console.error(error);

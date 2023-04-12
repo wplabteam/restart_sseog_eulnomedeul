@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" id="frmForm" name="frmForm">
+    <label>
+        송다운
+        <input type="text" name="song">
+    </label>
+    <label>
+        오동준
+        <input type="text" name="dong">
+    </label>
+    <label>
+        이용호
+        <input type="text" name="lee">
+    </label>
+    <label>
+        강수림
+        <input type="text" name="kang">
+    </label>
+    <button type="button" id="save_button">혈당 체크</button>
+</form>
+</body>
+</html>
+<script>
+    document.getElementById("save_button").addEventListener("click", () => {
+        let formData = new FormData(document.getElementById("frmForm"))
+        fetch('/blood/save', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    })
+</script>

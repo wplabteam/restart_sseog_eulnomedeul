@@ -12,7 +12,7 @@
     </label>
     <label>
         오동준
-        <input type="text" name="dong">
+        <input type="text" name="oh">
     </label>
     <label>
         이용호
@@ -35,7 +35,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                if(data.code === 200) {
+                    alert("저장!")
+                }
             })
             .catch(error => {
                 console.error(error);

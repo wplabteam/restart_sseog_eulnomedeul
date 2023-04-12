@@ -23,3 +23,7 @@ y
 Isrc/main/java/com/example/demo/repository/BloodCheckRepositoryCustom.java,4/a/4a935559c947606d74e32ba5c1518b0df0f414f8
 ]
 -src/main/resources/templates/blood/blood.html,c/f/cf7fd8273abe68b34a5436d7fc052d830e8f0ae9
+q
+Abuild/generated/querydsl/com/example/demo/entity/QBloodCheck.java,2/a/2a8a9f640c4cad17ac192cb03f2f19a5771c91ca
+K
+.idea/modules/demo.main.iml,5/6/56915cc1aa27c64d2dc189eab9d4c61670b2dfcf

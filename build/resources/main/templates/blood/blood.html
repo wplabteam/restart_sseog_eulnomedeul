@@ -45,29 +45,37 @@
 </style>
 <body>
 <form method="POST" id="frmForm" name="frmForm">
-    <label>
-        송다운
-        <input type="text" name="song" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
-    </label>
-    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="Y">공복
-    <label>
-        오동준
-        <input type="text" name="oh" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
-
-    </label>
-    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="2">공복
-    <label>
-        이용호
-        <input type="text" name="lee" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
-
-    </label>
-    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="2">공복
-    <label>
-        강수림
-        <input type="text" name="kang" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
-    </label>
-    <input type="radio" name="bloodCheck" title="공복여부" value="Y" id="4">공복
-
+    <table>
+        <thead>
+        <tr>
+            <th>이름</th>
+            <th>혈당</th>
+            <th>공복여부</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>송다운</td>
+            <td><input type="text" name="song" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
+            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="Y">공복</td>
+        </tr>
+        <tr>
+            <td>오동준</td>
+            <td><input type="text" name="oh" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
+            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="asdf">공복</td>
+        </tr>
+        <tr>
+            <td>이용호</td>
+            <td><input type="text" name="lee" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
+            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="ccc">공복</td>
+        </tr>
+        <tr>
+            <td>강수림</td>
+            <td><input type="text" name="kang" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
+            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="4">공복</td>
+        </tr>
+        </tbody>
+    </table>
     <button type="button" id="save_button">혈당 체크</button>
     <button type="button" id="list_button">목록</button>
 </form>
@@ -79,6 +87,7 @@
         fetch('/blood/save', {
             method: 'POST',
             body: formData
+
         })
             .then(response => response.json())
             .then(data => {

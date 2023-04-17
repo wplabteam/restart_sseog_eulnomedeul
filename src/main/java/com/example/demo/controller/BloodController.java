@@ -18,6 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class BloodController {
+    /**
+    *
+    * BloodController의 설명을 여기에 작성한다
+     * 혈당 체크 리스트 / 등록 부분
+    * @author SONG_DA_WOON
+    * @version 1.0.0
+    * 작성일 2023/04/17
+    **/
 
     private final BloodCheckService bloodCheckService;
     @RequestMapping("/blood/write")

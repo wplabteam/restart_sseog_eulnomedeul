@@ -3,22 +3,26 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.NoticeSaveDto;
 import com.example.demo.entity.Notice;
+import com.example.demo.repository.NoticeRepository;
 import com.example.demo.service.NoticeService;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class BoardController {
+    private final NoticeRepository noticeRepository;
     private final FileService fileService;
     private final NoticeService noticeService;
 
@@ -94,6 +98,23 @@ public class BoardController {
         NoticeSaveDto noticeSaveDto = noticeService.searchNoticeView(seq);
         model.addAttribute("noticeSaveDto", noticeSaveDto);
         return "board/notice_view";
+    }
+
+    @PostMapping("/board/notice/delete")
+    public ResponseEntity<?> deleteNotice(@RequestBody Map<String, String> requestBody){
+
+        Long seq = Long.parseLong(requestBody.get("seq"));
+
+        Notice notice = noticeRepository.findById(seq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
+        if(notice == null){
+            return ResponseEntity.badRequest().body("해당 게시글이 없습니다.");
+        }
+
+        notice.setNtIsDel("Y");
+        noticeRepository.save(notice);
+
+        return ResponseEntity.ok(Map.of("result", "success"));
+
     }
 
 }

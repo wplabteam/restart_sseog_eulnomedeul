@@ -95,7 +95,8 @@
                 </div>
                 <div class="list-button-wrap type-center">
                     <button class="list-button sec-3" onclick="javascript:history.back();">목록</button>
-                    <button class="list-button sec-3" id="delBtn" >목록</button>
+                    <button class="list-button sec-3" id="delBtn" >삭제</button>
+                    <input type="hidden" th:value="${noticeSaveDto.seq}" id="ntSeq">
 
                 </div>
             </div>
@@ -105,26 +106,33 @@
 </body>
 </html>
 <script>
-    // fetch 로 delBtn 클릭시 삭제하기
-    const delBtn = document.querySelector('#delBtn');
-    delBtn.addEventListener('click', function () {
-        fetch('/board/notice/delete', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ntSeq: ${noticeSaveDto.ntSeq}
-            })
-        }).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            if (result === 'success') {
-                alert('삭제되었습니다.');
-                location.href = '/board/notice/list';
-            } else {
-                alert('삭제에 실패했습니다.');
-            }
-        });
-    });
+    // fetch 로 delBtn 클릭시 isDel  = Y로 변경
+       const delBtn = document.querySelector('#delBtn');
+
+       const seq = document.querySelector('#ntSeq').value;
+
+
+
+         delBtn.addEventListener('click', function () {
+
+              fetch('/board/notice/delete', {
+                method: 'POST',
+                headers: {
+                     'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    seq: seq
+                })
+              }).then(function (response) {
+                return response.json();
+              }).then(function (json) {
+                if (json.result === 'success') {
+                     alert('삭제되었습니다.');
+                     location.href = '/board/notice/list';
+                } else {
+                     alert('삭제에 실패했습니다.');
+                }
+              });
+         });
+
 </script>

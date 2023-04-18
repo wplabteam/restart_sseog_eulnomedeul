@@ -1,15 +1,14 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.NoticeSaveDto;
+import com.example.demo.notice.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
-import com.example.demo.entity.Notice;
-import com.example.demo.repository.NoticeRepository;
+import com.example.demo.notice.entity.Notice;
+import com.example.demo.notice.repository.NoticeRepository;
 import com.example.demo.service.NoticeService;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

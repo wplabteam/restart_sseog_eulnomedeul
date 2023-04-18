@@ -1,4 +1,4 @@
-package com.example.demo.repository;
+package com.example.demo.notice.repository;
 
 public interface NoticeRepositoryCustom {
 }

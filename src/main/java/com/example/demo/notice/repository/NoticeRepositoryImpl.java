@@ -1,12 +1,11 @@
-package com.example.demo.repository;
+package com.example.demo.notice.repository;
 
-import com.example.demo.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
-import com.example.demo.entity.Notice;
-import com.example.demo.entity.QNotice;
+import com.example.demo.notice.entity.Notice;
+import com.example.demo.notice.entity.QNotice;
+import com.example.demo.notice.repository.NoticeRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.hibernate.criterion.Projection;
 
 import javax.persistence.EntityManager;
 import java.util.List;

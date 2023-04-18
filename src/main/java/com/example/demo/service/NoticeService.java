@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.NoticeSaveDto;
+import com.example.demo.notice.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.entity.File;
-import com.example.demo.entity.Notice;
-import com.example.demo.repository.NoticeRepository;
-import com.example.demo.repository.NoticeRepositoryImpl;
+import com.example.demo.notice.entity.Notice;
+import com.example.demo.notice.repository.NoticeRepository;
+import com.example.demo.notice.repository.NoticeRepositoryImpl;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

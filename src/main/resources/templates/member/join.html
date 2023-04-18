@@ -76,28 +76,37 @@
 </head>
 <body>
 <h1>회원가입</h1>
-<form action="register.php" method="post">
-    <label for="username">사용자명:</label>
-    <input type="text" id="username" name="username"><br>
+<form method="post" th:action="@{/join/write}" th:object="${memberSaveDto}">
+    <label>이름:</label>
+    <input type="text" name="mbName" id="mbName"><br>
 
-    <label for="email">이메일:</label>
-    <input type="email" id="email" name="email"><br>
+    <label>아이디:</label>
+    <input type="text" name="mbUserName" id="mbUserName"><br>
+    <button type="button" class="btn" id="idChk">중복확인</button>
 
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password"><br>
+
+    <label>비밀번호:</label>
+    <input type="password" name="mbPassword"><br>
 
     <label for="confirm_password">비밀번호 확인:</label>
     <input type="password" id="confirm_password" name="confirm_password"><br>
 
+    <label>이메일:</label>
+    <input type="email" name="mbEmail"><br>
+
+    <label for="emailCode">이메일 인증번호</label>
+    <input type="emailCode" id="emailCode" name="emailCode"><br>
+
     <label for="confirm_password">주소:</label>
     <input type="hidden" name="postcode" id="postcode">
     <input type="hidden" name="addrNormal" id="addrNormal">
-    <input type="text" placeholder="주소 입력" name="addrRoad" id="addrRoad"><button type="button" class="btn" onclick="openPostLayer()">주소 찾기</button>
+    <input type="text" placeholder="주소 입력" name="mbAddress"><button type="button" class="btn" onclick="openPostLayer()">주소 찾기</button>
 
-    <input type="text" placeholder="상세주소 입력" name="addrDetail" id="addrDetail">
+    <input type="text" placeholder="상세주소 입력" name="mbDetailAddress">
 
 
     <input type="submit" value="회원가입">
+    <input type="button" onclick="location.href='/'" value="홈">
 </form>
 </body>
 <div id="daum-postcode-bg" class="daum-postcode-bg"></div>
@@ -132,7 +141,27 @@
     }
     // POST CODE SAMPLE end
 
-
+    //idChk 눌렀을때 fetch 사용해서 중복확인
+    const idChk = document.getElementById('idChk');
+    idChk.addEventListener('click', function () {
+        const mbId = document.getElementById('mbUserName').value;
+        alert(mbId);
+        fetch('/join/idChk', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({mbId: mbId})
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            if (json.result === 'success') {
+                alert('사용 가능한 아이디입니다.');
+            } else {
+                alert('이미 사용중인 아이디입니다.');
+            }
+        });
+    });
 </script>
 </html>
 

@@ -86,6 +86,11 @@
             cursor: pointer; /* 커서 포인터로 변경 */
             border-radius: 5px; /* 테두리 반경 */
         }
+
+        label[for="bloodConcentration"] {
+            display: block;
+            margin-bottom: 10px; /* 라벨과 입력 필드 간격 조정 */
+        }
     </style>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
@@ -104,13 +109,17 @@
     <input type="text" id="addressDetail" name="addressDetail" required><br><br>
 
     <label for="phoneNo">전화번호<span style="color:red">*</span></label>
-    <input type="tel" id="phoneNo" name="phoneNo" required><br><br>
+    <input type="tel" id="phoneNo" name="phoneNo" oninput="formatPhoneNo()" pattern="[0-9\-]{12,13}" required><br><br>
 
+
+<!--    <label for="email">이메일<span style="color:red">*</span></label>-->
+<!--    <input type="email" id="email" name="email" required><br><br>-->
     <label for="email">이메일<span style="color:red">*</span></label>
-    <input type="email" id="email" name="email" required><br><br>
+    <input type="email" id="email" name="email" required>
+    <span id="email-error"></span>
 
-    <label for="bloodConcentration">혈당농도<span style="color:red">*</span></label>
-    <input type="number" id="bloodConcentration" name="bloodConcentration" required><br><br>
+    <label for="bloodConcentration">혈당 농도<span style="color:red">*</span></label>
+    <input type="text" id="bloodConcentration" name="bloodConcentration" required min="0" max="300"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"><br><br>
 
     <label for="isHungry">공복여부*</label>
     <select id="isHungry" name="isHungry" required>
@@ -199,4 +208,38 @@
                 console.error(error);
             });
     })
+
+    function formatPhoneNo() {
+        const input = document.getElementById('phoneNo');
+        const value = input.value.replace(/[^\d]/g, '');
+        const len = value.length;
+        let phoneNo = '';
+
+        if (len < 4) {
+            phoneNo = value;
+        } else if (len < 7) {
+            phoneNo = value.substring(0, 3) + '-' + value.substring(3);
+        } else if (len < 11) {
+            phoneNo = value.substring(0, 3) + '-' + value.substring(3, 6) + '-' + value.substring(6);
+        } else {
+            phoneNo = value.substring(0, 3) + '-' + value.substring(3, 7) + '-' + value.substring(7, 11);
+        }
+
+        input.value = phoneNo;
+    }
+
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    emailInput.addEventListener('input', function(event) {
+        const email = event.target.value;
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!regex.test(email)) {
+            emailError.textContent = '유효한 이메일 주소를 입력하세요.';
+            emailError.style.color = 'red';
+            emailInput.setCustomValidity('유효한 이메일 주소를 입력하세요.');
+        } else {
+            emailError.textContent = '';
+            emailInput.setCustomValidity('');
+        }
+    });
 </script>

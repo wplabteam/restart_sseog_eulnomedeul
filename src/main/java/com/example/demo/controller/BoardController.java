@@ -56,8 +56,12 @@ public class BoardController {
             noticeService.saveNotice(noticeSaveDto);
         }
 
-
-
         return "redirect:/board/notice/write";
+    }
+
+    @GetMapping("/board/notice/list")
+    public String noticeList(){
+
+        return "board/notice_list";
     }
 }

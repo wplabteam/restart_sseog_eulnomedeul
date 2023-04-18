@@ -8,16 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class MainController {
-    @RequestMapping("/")
-    public String main() {
+public class MemberController {
 
-        return "/main/main";
+    @RequestMapping("/member/join")
+    public String join() {
+
+        return "/member/join";
     }
-
-    @RequestMapping("/kakaoMap")
-    public String kakaoMap() {
-        return "kakao/kakaoMap";
-    }
-
 }

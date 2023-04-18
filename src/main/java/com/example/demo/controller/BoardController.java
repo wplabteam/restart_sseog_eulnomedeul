@@ -90,8 +90,9 @@ public class BoardController {
      */
 
     @GetMapping("/board/notice/view/{seq}")
-    public String noticeDetail(@PathVariable Long seq){
-//        Notice notice = noticeService.noticeView(seq);
+    public String noticeDetail(@PathVariable Long seq, Model model){
+        NoticeSaveDto noticeSaveDto = noticeService.searchNoticeView(seq);
+        model.addAttribute("noticeSaveDto", noticeSaveDto);
         return "board/notice_view";
     }
 

@@ -4,6 +4,7 @@ import com.example.demo.dto.NoticeSaveDto;
 import com.example.demo.entity.File;
 import com.example.demo.entity.Notice;
 import com.example.demo.repository.NoticeRepository;
+import com.example.demo.repository.NoticeRepositoryImpl;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,19 @@ public class NoticeService {
     @Autowired
     private final NoticeRepository noticeRepository;
 
+    private final NoticeRepositoryImpl noticeRepositoryImpl;
+
+
     private final FileService fileService;
 
 
 
+    /**
+     * method         : saveNotice
+     * author         : 오동준
+     * date           : 2023/04/18
+     * description    : 공지사항 등록
+     */
 
     public void saveNotice(NoticeSaveDto noticeSaveDto) {
         Notice notice = new Notice();
@@ -38,17 +48,35 @@ public class NoticeService {
         noticeRepository.save(notice);
     }
 
+    /**
+     * method         : searchNoticeList
+     * author         : 오동준
+     * date           : 2023/04/18
+     * description    : 공지사항 리스트
+     */
     public List<Notice> searchNoticeList() {
 
         return noticeRepository.findAll();
     }
 
-//    public Notice noticeView(Long seq) {
-//        Notice noticeView = noticeRepository.findById(seq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
-////
-////        File noticeFile = fileService.findById(noticeView.getSeq());
-////        if(noticeFile != null){
-//////            noticeView.setFileSeq(noticeFile);
-////        }
-//    }
+
+    /**
+     * method         : searchNoticeView
+     * author         : 오동준
+     * date           : 2023/04/18
+     * description    : 공지사항 상세보기
+     */
+
+    public NoticeSaveDto searchNoticeView(Long seq) {
+        NoticeSaveDto noticeSaveDto = noticeRepositoryImpl.searchNoticeView(seq);
+
+        Notice notice = noticeRepository.findById(seq).get();
+        notice.setCount(notice.getCount() + 1);
+
+        File noticeFile = fileService.findById(noticeSaveDto.getFileSeq());
+        if(noticeFile != null){
+            noticeSaveDto.setFile(noticeFile);
+        }
+        return noticeSaveDto;
+    }
 }

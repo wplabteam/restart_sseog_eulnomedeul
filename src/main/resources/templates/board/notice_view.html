@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    /* 게시글 전체를 감싸는 div */
+    #sub {
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* 게시글 제목 */
+    .view .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* 게시글 날짜, 조회수 */
+    .view .sub {
+        font-size: 14px;
+        color: gray;
+    }
+
+    /* 게시글 내용 */
+    .content-area {
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 20px 0;
+    }
+
+    /* 파일 목록 */
+    .file-list-wrap-board {
+        margin-top: 20px;
+    }
+
+    .file-list-wrap-board .file-list {
+        font-size: 16px;
+    }
+
+    /* 목록 버튼 */
+    .list-button-wrap {
+        margin-top: 20px;
+    }
+
+    .list-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: #3B3B3B;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .list-button:hover {
+        background-color: #545454;
+    }
+
+</style>
+<body>
+<div id="sub" class="mypage my-set board">
+    <div class="w-set">
+        <div class="has-side-menu">
+
+            <div class="after-side">
+                <div class="sub-title hide-m">
+                    <b>공지</b>
+                </div>
+                <div class="view-wrap for-my-notice">
+                    <div class="view">
+                        <div class="top-area">
+                            <div class="title">
+                                <span class="notice">공지</span>
+                                <p th:text="${noticeSaveDto.ntTitle}">새로운 소식 알려드립니다.</p>
+                            </div>
+                            <div class="sub">
+                                <span class="date" th:text="${#temporals.format(noticeSaveDto.ntRegDate, 'yyyy-MM-dd')}">23-03-08</span>
+                                <span class="views" th:text="|${noticeSaveDto.count} hit|">223</span>
+                            </div>
+                        </div>
+                        <div class="content-area" th:utext="${noticeSaveDto.ntContent}">
+
+                        </div>
+                        <div class="file-list-wrap-board">
+                            <div class="file-list">
+                                <a  th:href="@{/download(fileSeq=${noticeSaveDto.file.getSeq()})}" th:text="${noticeSaveDto.file.getFileOriginalName()}">빌려요 대부업체 리스트.pdf</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-button-wrap type-center">
+                    <button class="list-button sec-3" onclick="javascript:history.back();">목록</button>
+                    <button class="list-button sec-3" id="delBtn" >목록</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    // fetch 로 delBtn 클릭시 삭제하기
+    const delBtn = document.querySelector('#delBtn');
+    delBtn.addEventListener('click', function () {
+        fetch('/board/notice/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ntSeq: ${noticeSaveDto.ntSeq}
+            })
+        }).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            if (result === 'success') {
+                alert('삭제되었습니다.');
+                location.href = '/board/notice/list';
+            } else {
+                alert('삭제에 실패했습니다.');
+            }
+        });
+    });
+</script>

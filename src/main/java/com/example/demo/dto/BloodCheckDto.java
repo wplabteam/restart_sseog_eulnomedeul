@@ -8,20 +8,28 @@ import java.time.LocalDateTime;
 @Data
 public class BloodCheckDto {
     private Long bloodCheckId;
-    private Long song;
-    private Long oh;
-    private Long lee;
-    private Long kang;
+    private String userName;
+    private String address;
+    private String addressDetail;
+    private String phoneNo;
+    private String email;
+    private Long bloodConcentration;
+    private String isHungry;
     private LocalDateTime regDate;
+    private LocalDateTime modDate;
 
     @QueryProjection
 
-    public BloodCheckDto(Long bloodCheckId, Long song, Long oh, Long lee, Long kang, LocalDateTime regDate) {
+    public BloodCheckDto(Long bloodCheckId, String userName, String address, String addressDetail, String phoneNo, String email, Long bloodConcentration, String isHungry, LocalDateTime regDate, LocalDateTime modDate) {
         this.bloodCheckId = bloodCheckId;
-        this.song = song;
-        this.oh = oh;
-        this.lee = lee;
-        this.kang = kang;
+        this.userName = userName;
+        this.address = address;
+        this.addressDetail = addressDetail;
+        this.phoneNo = phoneNo;
+        this.email = email;
+        this.bloodConcentration = bloodConcentration;
+        this.isHungry = isHungry;
         this.regDate = regDate;
+        this.modDate = modDate;
     }
 }

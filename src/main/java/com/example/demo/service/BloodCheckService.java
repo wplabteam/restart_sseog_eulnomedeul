@@ -19,16 +19,18 @@ public class BloodCheckService {
     @Autowired
     private BloodCheckRepository bloodCheckRepository;
     public void insertBlood(BloodCheckDto dto) {
-
-        BloodCheck bloodCHeck = BloodCheck.builder()
-                .song(dto.getSong())
-                .oh(dto.getOh())
-                .lee(dto.getLee())
-                .kang(dto.getKang())
-                .regDate(LocalDateTime.now())
+        BloodCheck bloodCheck = BloodCheck.builder()
+                .userName(dto.getUserName())
+                .address(dto.getAddress())
+                .addressDetail(dto.getAddressDetail())
+                .email(dto.getEmail())
+                .bloodConcentration(dto.getBloodConcentration())
+                .isHungry(dto.getIsHungry())
+                .phoneNo(dto.getPhoneNo())
                 .build();
 
-        bloodCheckRepository.save(bloodCHeck);
+        bloodCheckRepository.save(bloodCheck);
+
     }
 
     public List<BloodCheckDto> selectBloodList() {

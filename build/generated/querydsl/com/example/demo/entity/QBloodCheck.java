@@ -19,17 +19,25 @@ public class QBloodCheck extends EntityPathBase<BloodCheck> {
 
     public static final QBloodCheck bloodCheck = new QBloodCheck("bloodCheck");
 
+    public final StringPath address = createString("address");
+
+    public final StringPath addressDetail = createString("addressDetail");
+
     public final NumberPath<Long> bloodCheckId = createNumber("bloodCheckId", Long.class);
 
-    public final NumberPath<Long> kang = createNumber("kang", Long.class);
+    public final NumberPath<Long> bloodConcentration = createNumber("bloodConcentration", Long.class);
 
-    public final NumberPath<Long> lee = createNumber("lee", Long.class);
+    public final StringPath email = createString("email");
 
-    public final NumberPath<Long> oh = createNumber("oh", Long.class);
+    public final StringPath isHungry = createString("isHungry");
+
+    public final DateTimePath<java.time.LocalDateTime> modDate = createDateTime("modDate", java.time.LocalDateTime.class);
+
+    public final StringPath phoneNo = createString("phoneNo");
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
-    public final NumberPath<Long> song = createNumber("song", Long.class);
+    public final StringPath userName = createString("userName");
 
     public QBloodCheck(String variable) {
         super(BloodCheck.class, forVariable(variable));

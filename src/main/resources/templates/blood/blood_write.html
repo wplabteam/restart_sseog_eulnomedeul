@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>혈당 체크</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #444444;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        input, select {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.1);
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        button {
+            background-color: #4CAF50; /* 배경색 */
+            border: none; /* 테두리 없앰 */
+            color: white; /* 글자색 */
+            padding: 15px 32px; /* 내부 패딩 */
+            text-align: center; /* 가운데 정렬 */
+            text-decoration: none; /* 밑줄 없앰 */
+            display: inline-block; /* 인라인 요소로 설정 */
+            font-size: 16px; /* 글자 크기 */
+            margin: 4px 2px; /* 마진 설정 */
+            cursor: pointer; /* 커서 포인터로 변경 */
+            border-radius: 5px; /* 테두리 반경 */
+        }
+    </style>
+</head>
+<body>
+<h1>혈당 체크</h1>
+<form method="POST" id="frmForm" name="frmForm">
+    <label for="userName">이름<span style="color:red">*</span></label>
+    <input type="text" id="userName" name="userName" required><br><br>
+
+    <label for="address">주소<span style="color:red">*</span></label>
+    <button type="button" value="">주소찾기</button>
+    <input type="text" id="address" name="address" required><br><br>
+    <label for="addressDetail">상세 주소<span style="color:red">*</span></label>
+    <input type="text" id="addressDetail" name="addressDetail" required><br><br>
+
+    <label for="phoneNo">전화번호<span style="color:red">*</span></label>
+    <input type="tel" id="phoneNo" name="phoneNo" required><br><br>
+
+    <label for="email">이메일<span style="color:red">*</span></label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="bloodConcentration">혈당농도<span style="color:red">*</span></label>
+    <input type="number" id="bloodConcentration" name="bloodConcentration" required><br><br>
+
+    <label for="isHungry">공복여부*</label>
+    <select id="isHungry" name="isHungry" required>
+        <option value="">-- 선택 --</option>
+        <option value="Y">예</option>
+        <option value="N">아니오</option>
+    </select><br><br>
+</form>
+<input type="submit" value="제출" id="save_button">
+</body>
+</html>
+<script>
+    document.getElementById("save_button").addEventListener("click", () => {
+        if(document.querySelector("input[name='userName']").value.length === 0) {
+            alert("이름을 입력해주세요.")
+            return false
+        }
+        if(document.querySelector("input[name='address']").value.length === 0) {
+            alert("주소를 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='addressDetail']").value.length === 0) {
+            alert("상세 주소를 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='phoneNo']").value.length === 0) {
+            alert("휴대폰 번호를 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='email']").value.length === 0) {
+            alert("이메일을 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='bloodConcentration']").value.length === 0) {
+            alert("혈당농도를 입력해주세요.")
+            return false;
+        }
+        let formData = new FormData(document.getElementById("frmForm"))
+        document.querySelectorAll(".isEmptyStomach").forEach(tag => {
+            tag.addEventListener("click", () => {
+                formData.append("isEmptyStomach", tag.value);
+            })
+        })
+
+
+        fetch('/blood/save', {
+            method: 'POST',
+            body: formData
+
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.code === 200) {
+                    alert("저장!")
+                    location.href = '/blood/list'
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    })
+</script>

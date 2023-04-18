@@ -24,24 +24,28 @@
   </style>
 </head>
 <body>
-<h1>테이블 리스트</h1>
+<h1>당 리스트</h1>
 <table>
   <thead>
   <tr>
-    <th>송다운</th>
-    <th>오동준</th>
-    <th>이용호</th>
-    <th>강수림</th>
+    <th>번호</th>
+    <th>이름</th>
+    <th>휴대폰 번호</th>
+    <th>혈당 수치</th>
+    <th>공복 여부</th>
+    <th>주소</th>
     <th>등록일</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="list : ${list}">
-    <td th:text="${list.song}">홍길동</td>
-    <td th:text="${list.oh}">hong@gmail.com</td>
-    <td th:text="${list.lee}">010-1234-5678</td>
-    <td th:text="${list.kang}">hong@gmail.com</td>
-    <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd hh:mm:ss')}">hong@gmail.com</td>
+    <td th:text="${list.bloodCheckId}">홍길동</td>
+    <td th:text="${list.userName}">hong@gmail.com</td>
+    <td th:text="${list.phoneNo}">010-1234-5678</td>
+    <td th:text="${list.bloodConcentration}">010-1234-5678</td>
+    <td th:text="${list.isHungry eq 'Y' ? '공복' : '공복아님'}">hong@gmail.com</td>
+    <td th:text="${list.address + ' ' + list.addressDetail}">hong@gmail.com</td>
+    <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd')}">hong@gmail.com</td>
   </tr>
   </tbody>
 </table>

@@ -57,22 +57,22 @@
         <tr>
             <td>송다운</td>
             <td><input type="text" name="song" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
-            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="Y">공복</td>
+            <td><input type="radio" class="isEmptyStomach" name="isEmptyStomach" title="공복여부" value="Y" id="song">공복</td>
         </tr>
         <tr>
             <td>오동준</td>
             <td><input type="text" name="oh" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
-            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="asdf">공복</td>
+            <td><input type="radio" class="isEmptyStomach" name="isEmptyStomach" title="공복여부" value="Y" id="oh">공복</td>
         </tr>
         <tr>
             <td>이용호</td>
             <td><input type="text" name="lee" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
-            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="ccc">공복</td>
+            <td><input type="radio" class="isEmptyStomach" name="isEmptyStomach" title="공복여부" value="Y" id="lee">공복</td>
         </tr>
         <tr>
             <td>강수림</td>
             <td><input type="text" name="kang" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"></td>
-            <td><input type="radio" name="bloodCheck" title="공복여부" value="Y" id="4">공복</td>
+            <td><input type="radio" class="isEmptyStomach" name="isEmptyStomach" title="공복여부" value="Y" id="kang">공복</td>
         </tr>
         </tbody>
     </table>
@@ -83,7 +83,30 @@
 </html>
 <script>
     document.getElementById("save_button").addEventListener("click", () => {
+        if(document.querySelector("input[name='song']").value.length === 0) {
+            alert("다운쒸 혈당 입력해주세요.")
+            return false
+        }
+        if(document.querySelector("input[name='oh']").value.length === 0) {
+            alert("동준씨 혈당 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='lee']").value.length === 0) {
+            alert("용호씨 혈당 입력해주세요.")
+            return false;
+        }
+        if(document.querySelector("input[name='kang']").value.length === 0) {
+            alert("수림씨 혈당 입력해주세요.")
+            return false;
+        }
         let formData = new FormData(document.getElementById("frmForm"))
+            document.querySelectorAll(".isEmptyStomach").forEach(tag => {
+                tag.addEventListener("click", () => {
+                    formData.append("isEmptyStomach", tag.value);
+                })
+            })
+
+
         fetch('/blood/save', {
             method: 'POST',
             body: formData

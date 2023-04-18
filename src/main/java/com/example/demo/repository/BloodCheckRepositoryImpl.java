@@ -23,11 +23,15 @@ public class BloodCheckRepositoryImpl implements BloodCheckRepositoryCustom {
         List<BloodCheckDto> content = jpaQueryFactory
                 .select(new QBloodCheckDto(
                         bloodCheck.bloodCheckId,
-                        bloodCheck.song,
-                        bloodCheck.oh,
-                        bloodCheck.lee,
-                        bloodCheck.kang,
-                        bloodCheck.regDate
+                        bloodCheck.userName,
+                        bloodCheck.address,
+                        bloodCheck.addressDetail,
+                        bloodCheck.phoneNo,
+                        bloodCheck.email,
+                        bloodCheck.bloodConcentration,
+                        bloodCheck.isHungry,
+                        bloodCheck.regDate,
+                        bloodCheck.modDate
                 ))
                 .from(bloodCheck)
                 .orderBy(bloodCheck.regDate.desc())

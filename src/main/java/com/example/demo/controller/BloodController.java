@@ -28,11 +28,10 @@ public class BloodController {
     **/
 
     private final BloodCheckService bloodCheckService;
-    @RequestMapping("/blood/write")
-    public String blood(BloodCheckDto dto) {
-        System.out.println("dto:" + dto.getSong());
 
-        return "blood/blood";
+    @GetMapping("/blood/write")
+    public String bloodWrite() {
+        return "blood/blood_write";
     }
 
     @PostMapping("/blood/save")

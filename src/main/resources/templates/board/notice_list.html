@@ -5,85 +5,84 @@
     <title>Title</title>
 </head>
 <style>
-  .notice-board {
-    border-collapse: collapse;
-    width: 100%;
-  }
+    .notice-board {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-  .notice-board caption {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+    .notice-board caption {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
 
-  .notice-board th {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-  }
+    .notice-board th {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+    }
 
-  .notice-board td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
+    .notice-board td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
 
-  .notice-board td:last-child {
-    text-align: center;
-  }
+    .notice-board td:last-child {
+        text-align: center;
+    }
 
-  .notice-board tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  .write-btn {
-    background-color: #007bff;
-    text-align: center ;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 10px 20px;
-  }
+    .notice-board tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-  .write-btn:hover {
-    background-color: #0069d9;
-  }
+    .write-btn {
+        background-color: #007bff;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .write-btn:hover {
+        background-color: #0069d9;
+    }
 </style>
 <body>
 <table class="notice-board">
-  <caption>공지사항</caption>
-  <thead>
-  <tr>
-    <th>번호</th>
-    <th>제목</th>
-    <th>작성일</th>
-    <th>노출여부</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>1</td>
-    <td>게시글 제목</td>
-    <td>2023-04-14</td>
-    <td>노출</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>게시글 제목</td>
-    <td>2023-04-12</td>
-    <td>노출</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>게시글 제목</td>
-    <td>2023-04-10</td>
-    <td>미노출</td>
-  </tr>
-  </tbody>
+    <caption>공지사항</caption>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성일</th>
+        <th>노출여부</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:if="${noticeList.isEmpty()}">
+        <tr>
+            <td>등록된 데이터가 없습니다.</td>
+        </tr>
+    </th:block>
+    <th:block th:each="list : ${noticeList}">
+        <tr>
+            <td th:text="${list.seq}">1</td>
+            <td>
+                <a th:href="@{/board/notice/view/{seq}(seq=${list.seq})}" class="btn_link txt_over" th:text="${list.ntTitle}">입력된 제목이 표시됩니다. 입력된 제목이 표시됩니다…(최대 1줄)</a>
+            </td>
+            <td th:text="${#temporals.format(list.ntRegDate,'yyyy-MM-dd') }">2023-04-14</td>
+            <td th:text="${list.ntIsView eq 'Y'} ? '노출' : '미노출' ">노출</td>
+        </tr>
+    </th:block>
+    </tbody>
 </table>
-<button class="write-btn">글쓰기</button>
+<a th:href="@{/board/notice/write}" class="write-btn">글쓰기</a>
 
 </body>
 </html>

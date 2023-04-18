@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "notice_seq")
+   @Column(name = "nt_seq")
     private Long seq;
     //제목
     private String ntTitle;

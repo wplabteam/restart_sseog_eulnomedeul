@@ -7,10 +7,13 @@ import com.example.demo.service.NoticeService;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,10 +39,10 @@ public class BoardController {
     }
 
     /**
-     * method         :
+     * method         : noticeWrite
      * author         : 오동준
      * date           : 2023/04/13
-     * description    : 기능 설명 작성
+     * description    : 공지사항 작성 페이지
      */
     @RequestMapping("/board/notice/write")
     public String noticeWrite(Model model, Notice noticeSaveDto) {
@@ -49,6 +52,12 @@ public class BoardController {
 
     }
 
+    /**
+     * method         : noticeWrite
+     * author         : 오동준
+     * date           : 2023/04/13
+     * description    : 공지사항 작성
+     */
     @PostMapping("/board/notice/write")
     public String noticeWrite(Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value="file", required = false)MultipartFile file)  throws Exception  {
         if(!file.isEmpty()){
@@ -59,9 +68,31 @@ public class BoardController {
         return "redirect:/board/notice/write";
     }
 
+    /**
+     * method         : noticeList
+     * author         : 오동준
+     * date           : 2023/04/13
+     * description    : 공지사항 리스트
+     */
     @GetMapping("/board/notice/list")
-    public String noticeList(){
+    public String noticeList(Model model) {
 
+        List<Notice> noticeList = noticeService.searchNoticeList();
+
+        model.addAttribute("noticeList", noticeList);
         return "board/notice_list";
     }
+    /**
+     * method         : noticeDetail
+     * author         : 오동준
+     * date           : 2023/04/18
+     * description    : 공지사항 상세보기
+     */
+
+    @GetMapping("/board/notice/view/{seq}")
+    public String noticeDetail(@PathVariable Long seq){
+//        Notice notice = noticeService.noticeView(seq);
+        return "board/notice_view";
+    }
+
 }

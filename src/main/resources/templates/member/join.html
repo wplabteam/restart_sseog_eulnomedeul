@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+
+        .sub_select_wrap.type_solid .inner .depth {display: none;}
+        .sub_select_wrap.type_solid .inner .depth.on {display: block;}
+
+        .sub_select_wrap.type_solid .inner .depth.depth_variable > li {display: none;}
+        .sub_select_wrap.type_solid .inner .depth.depth_variable > li:first-of-type,
+        .sub_select_wrap.type_solid .inner .depth.depth_variable > li.on {display: block;}
+
+        /* POST CODE SAMPLE */
+        .daum-postcode-bg {display: none; position: fixed; z-index: 9; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);}
+        .daum-postcode-bg.on {display: block;}
+        .daum-postcode {display: none; position: fixed; z-index: 10; top: 50%; left: 50%; width: 500px; height: 500px; margin: -250px 0 0 -250px;}
+        .daum-postcode.on {display: block;}
+        .daum-postcde-close {position: absolute; bottom: 100%; right: 0; margin-bottom: 10px; font-size: 16px; color: #fff;}
+        /* POST CODE SAMPLE end */
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -56,6 +72,7 @@
             background-color: #0069d9;
         }
     </style>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <h1>회원가입</h1>
@@ -72,10 +89,48 @@
     <label for="confirm_password">비밀번호 확인:</label>
     <input type="password" id="confirm_password" name="confirm_password"><br>
 
+    <label for="confirm_password">주소:</label>
+    <input type="hidden" name="postcode" id="postcode">
+    <input type="hidden" name="addrNormal" id="addrNormal">
+    <input type="text" placeholder="주소 입력" name="addrRoad" id="addrRoad"><button type="button" class="btn" onclick="openPostLayer()">주소 찾기</button>
+
+    <input type="text" placeholder="상세주소 입력" name="addrDetail" id="addrDetail">
 
 
     <input type="submit" value="회원가입">
 </form>
 </body>
+<div id="daum-postcode-bg" class="daum-postcode-bg"></div>
+<div id="daum-postcode" class="daum-postcode">
+    <button type="button" id="daum-postcde-close" class="daum-postcde-close" onclick="cloasePostLayer()">닫기</button>
+    <div id="daum-postcde-content" class="daum-postcde-content"></div>
+</div>
+<!-- POST CODE SAMPLE end -->
+
+<script>
+    var element_layer = document.getElementById('daum-postcode');
+    var element_layer_content = document.getElementById('daum-postcde-content');
+    function openPostLayer () {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 데이터 세팅
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("addrNormal").value = data.jibunAddress;
+                document.getElementById("addrRoad").value = data.roadAddress;
+                document.getElementById("addrDetail").focus();
+                // 레이어 감춤
+                cloasePostLayer();
+            }
+        }).embed(element_layer_content);
+        document.getElementById('daum-postcode-bg').classList.add('on');
+        element_layer.classList.add('on');
+    };
+
+    function cloasePostLayer() {
+        document.getElementById('daum-postcode-bg').classList.remove('on');
+        document.getElementById('daum-postcode').classList.remove('on');
+    }
+    // POST CODE SAMPLE end
+</script>
 </html>
 

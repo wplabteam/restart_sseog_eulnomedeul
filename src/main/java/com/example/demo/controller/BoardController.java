@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dto.NoticeSaveDto;
+import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.entity.Notice;
 import com.example.demo.repository.NoticeRepository;
 import com.example.demo.service.NoticeService;
@@ -64,7 +65,9 @@ public class BoardController {
      */
     @PostMapping("/board/notice/write")
     public String noticeWrite(Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value="file", required = false)MultipartFile file)  throws Exception  {
-        if(!file.isEmpty()){
+        System.out.println("file:" + file);
+                if(!file.isEmpty()){
+            System.out.println("file:" + file);
            noticeSaveDto.setFileSeq(fileService.saveFile(file));
             noticeService.saveNotice(noticeSaveDto);
         }
@@ -95,7 +98,7 @@ public class BoardController {
 
     @GetMapping("/board/notice/view/{seq}")
     public String noticeDetail(@PathVariable Long seq, Model model){
-        NoticeSaveDto noticeSaveDto = noticeService.searchNoticeView(seq);
+        NoticeViewDto noticeSaveDto = noticeService.searchNoticeView(seq);
         model.addAttribute("noticeSaveDto", noticeSaveDto);
         return "board/notice_view";
     }

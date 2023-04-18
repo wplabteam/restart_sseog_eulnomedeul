@@ -1,7 +1,7 @@
 package com.example.demo.dto;
 
+
 import com.example.demo.entity.File;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class NoticeSaveDto {
+public class NoticeViewDto {
     private Long seq;
     private String ntTitle;
     private String ntContent;
@@ -18,9 +18,9 @@ public class NoticeSaveDto {
     private String ntIsView;
     private String ntIsDel;
     private LocalDateTime ntRegDate;
-//    private File file;
+    private File file;
 
-    public NoticeSaveDto(Long seq, String ntTitle, String ntContent, int count, Long fileSeq, String ntIsView, String ntIsDel, LocalDateTime ntRegDate) {
+    public NoticeViewDto(Long seq, String ntTitle, String ntContent, int count, Long fileSeq, String ntIsView, String ntIsDel, LocalDateTime ntRegDate) {
         this.seq = seq;
         this.ntTitle = ntTitle;
         this.ntContent = ntContent;

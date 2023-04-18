@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.NoticeSaveDto;
+import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.entity.File;
 import com.example.demo.entity.Notice;
 import com.example.demo.repository.NoticeRepository;
@@ -43,6 +44,7 @@ public class NoticeService {
         notice.setFileSeq(noticeSaveDto.getFileSeq());
         notice.setSeq(noticeSaveDto.getSeq());
         notice.setNtIsView(noticeSaveDto.getNtIsView());
+        notice.setNtIsDel("N");
         notice.setNtRegDate(LocalDateTime.now());
 
         noticeRepository.save(notice);
@@ -56,7 +58,8 @@ public class NoticeService {
      */
     public List<Notice> searchNoticeList() {
 
-        return noticeRepository.findAll();
+        return noticeRepositoryImpl.searchNoticeList();
+
     }
 
 
@@ -67,17 +70,17 @@ public class NoticeService {
      * description    : 공지사항 상세보기
      */
 
-    public NoticeSaveDto searchNoticeView(Long seq) {
-        NoticeSaveDto noticeSaveDto = noticeRepositoryImpl.searchNoticeView(seq);
+    public NoticeViewDto searchNoticeView(Long seq) {
+        NoticeViewDto noticeViewDto = noticeRepositoryImpl.searchNoticeView(seq);
 
         Notice notice = noticeRepository.findById(seq).get();
         notice.setCount(notice.getCount() + 1);
 
-        File noticeFile = fileService.findById(noticeSaveDto.getFileSeq());
+        File noticeFile = fileService.findById(noticeViewDto.getFileSeq());
         if(noticeFile != null){
-            noticeSaveDto.setFile(noticeFile);
+            noticeViewDto.setFile(noticeFile);
         }
-        return noticeSaveDto;
+        return noticeViewDto;
     }
 
 

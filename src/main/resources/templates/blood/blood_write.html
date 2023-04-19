@@ -87,6 +87,19 @@
             border-radius: 5px; /* 테두리 반경 */
         }
 
+        .list-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
         label[for="bloodConcentration"] {
             display: block;
             margin-bottom: 10px; /* 라벨과 입력 필드 간격 조정 */
@@ -96,6 +109,7 @@
 </head>
 <body>
 <h1>혈당 체크</h1>
+
 <form method="POST" id="frmForm" name="frmForm">
     <label for="userName">이름<span style="color:red">*</span></label>
     <input type="text" id="userName" name="userName" required><br><br>
@@ -127,8 +141,9 @@
         <option value="Y">예</option>
         <option value="N">아니오</option>
     </select><br><br>
+    <a href="/blood/list" class="list-button">목록</a>
+    <input type="submit" value="제출" id="save_button">
 </form>
-<input type="submit" value="제출" id="save_button">
 </body>
 <div id="daum-postcode-bg" class="daum-postcode-bg"></div>
 <div id="daum-postcode" class="daum-postcode">

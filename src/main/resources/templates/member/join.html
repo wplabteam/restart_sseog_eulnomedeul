@@ -145,7 +145,6 @@
     const idChk = document.getElementById('idChk');
     idChk.addEventListener('click', function () {
         const mbId = document.getElementById('mbUserName').value;
-        alert(mbId);
         fetch('/join/idChk', {
             method: 'POST',
             headers: {

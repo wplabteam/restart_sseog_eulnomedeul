@@ -43,10 +43,8 @@ public class MemberController {
     @PostMapping("/join/idChk")
     public ResponseEntity<?> checkId(@RequestBody Map<String, String> requestBody) {
         String mbId = requestBody.get("mbId");
-        System.out.println("mbId = " + mbId);
-        Member member = memberRepository.findByMbUserName(mbId);
-        System.out.println("member = " + member);
-        if (member != null) {
+        Long checkId = memberRepository.countByMbUserName(mbId);
+        if (checkId != 0L) {
             return ResponseEntity.ok(Map.of("result", "fail"));
         } else {
             return ResponseEntity.ok(Map.of("result", "success"));

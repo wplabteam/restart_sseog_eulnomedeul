@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="header">
-    <nav>
-        <a th:href="@{/kakaoMap}">카카오 지도 api</a>
-        <a th:href="@{/blood/list}">혈당체크</a>
-        <a th:href="@{/board/pwChk}">JWT</a>
-        <a th:href="@{/board/notice/list}">파일첨부</a>
-        <a th:href="@{/member/join}">회원가입</a>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">메인페이지 입니다💻</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li><a th:href="@{/kakaoMap}">카카오 지도 api</a></li>
+                    <li><a th:href="@{/blood/list}">혈당체크</a></li>
+                    <li><a th:href="@{/board/pwChk}">JWT</a></li>
+                    <li><a th:href="@{/board/notice/list}">파일첨부</a></li>
+                    <li><a th:href="@{/member/join}">회원가입</a></li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
     </nav>
+
+
+
+
+
+
+
+
+
+<!--    <nav>-->
+<!--        <li><a th:href="@{/kakaoMap}">카카오 지도 api</a></li>-->
+<!--        <li><a th:href="@{/blood/list}">혈당체크</a></li>-->
+<!--        <li><a th:href="@{/board/pwChk}">JWT</a></li>-->
+<!--        <li><a th:href="@{/board/notice/list}">파일첨부</a></li>-->
+<!--        <li><a th:href="@{/member/join}">회원가입</a></li>-->
+<!--    </nav>-->
 </th:block>

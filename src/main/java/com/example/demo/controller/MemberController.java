@@ -5,9 +5,6 @@ import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.Message;
-import org.hibernate.Session;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,15 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 
 @Controller
 @RequiredArgsConstructor

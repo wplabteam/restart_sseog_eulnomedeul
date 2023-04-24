@@ -54,30 +54,33 @@
     .write-btn:hover {
         background-color: #0069d9;
     }
-    .form-search {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        display: inline-block;
-        margin-right: 10px;
-        padding: 10px;
+    .list-searchbox {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
-    .form-search input[type="text"] {
-        border: none;
-        border-bottom: 1px solid #ccc;
-        margin-right: 5px;
+    .list-searchbox input[type="text"] {
         padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-right: 5px;
     }
 
-    .form-search button[type="submit"] {
-        background-color: #007bff;
-        border: none;
+    .list-searchbox button[type="submit"] {
+        padding: 5px;
         border-radius: 5px;
+        border: none;
+        background-color: #007bff;
         color: #fff;
         cursor: pointer;
-        padding: 5px 10px;
     }
+
+    .list-searchbox button[type="submit"]:hover {
+        background-color: #0069d9;
+    }
+
 
 </style>
 <body>

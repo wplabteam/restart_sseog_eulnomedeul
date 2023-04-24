@@ -81,6 +81,11 @@
             <th>파일 첨부</th>
             <td>
                 <input type="file" name="file" id="file_type01">
+            </td>
+        </tr>
+        <tr style="display: none" id="file_01">
+            <th>첨부 파일</th>
+            <td>
                 <span id="filename" style="display: none">첨부한 파일명. 확장자</span>
                 <button type="button" id="btn_del" style="display: none">삭제</button>
             </td>
@@ -110,9 +115,10 @@
 
         ext = filename.split(".").pop();
         let file_type = $("#file_type01");
-        if ($.inArray(ext, ['pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'doc', 'docx', 'jpg', 'jpeg', 'gif']) > -1) {
+        if ($.inArray(ext, ['pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'doc', 'docx', 'jpg', 'jpeg', 'gif', 'txt']) > -1) {
             document.getElementById("filename").style.display = "inline-block";
             document.getElementById("btn_del").style.display = "inline-block";
+            document.getElementById("file_01").style.display = "table-row";
             document.getElementById("filename").innerHTML = filename;
         } else {
             document.getElementById("file_type01").value = "";
@@ -124,6 +130,7 @@
         document.getElementById("file_type01").value = "";
         document.getElementById("filename").innerHTML = "첨부한 파일명. 확장자";
         document.getElementById("filename").style.display = "none";
+        document.getElementById("file_01").style.display = "none";
         document.getElementById("btn_del").style.display = "none";
     };
 

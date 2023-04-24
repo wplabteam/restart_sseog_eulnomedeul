@@ -17,8 +17,11 @@ import java.time.LocalDateTime;
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "nt_seq")
+    @Column(name = "nt_seq")
     private Long seq;
+    @Column(name = "mb_username_fk")
+    // 작성자
+    private String mbUserName;
     //제목
     private String ntTitle;
     //내용

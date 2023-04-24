@@ -46,6 +46,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                 .select(Projections.constructor(
                         Notice.class,
                         notice.seq,
+                        notice.mbUserName,
                         notice.ntTitle,
                         notice.ntContent,
                         notice.count,

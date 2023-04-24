@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NoticeSaveDto {
     private Long seq;
+    private String mbUserName;
     private String ntTitle;
     private String ntContent;
     private int count;
@@ -20,8 +21,10 @@ public class NoticeSaveDto {
     private LocalDateTime ntRegDate;
 //    private File file;
 
-    public NoticeSaveDto(Long seq, String ntTitle, String ntContent, int count, Long fileSeq, String ntIsView, String ntIsDel, LocalDateTime ntRegDate) {
+
+    public NoticeSaveDto(Long seq, String mbUserName, String ntTitle, String ntContent, int count, Long fileSeq, String ntIsView, String ntIsDel, LocalDateTime ntRegDate) {
         this.seq = seq;
+        this.mbUserName = mbUserName;
         this.ntTitle = ntTitle;
         this.ntContent = ntContent;
         this.count = count;

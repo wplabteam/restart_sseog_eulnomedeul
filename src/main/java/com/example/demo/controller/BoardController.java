@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.entity.Member;
 import com.example.demo.notice.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.notice.entity.Notice;
@@ -15,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +28,6 @@ public class BoardController {
     private final NoticeRepository noticeRepository;
     private final FileService fileService;
     private final NoticeService noticeService;
-
 
 
     /**
@@ -49,11 +51,18 @@ public class BoardController {
      * description    : 공지사항 작성
      */
     @PostMapping("/board/notice/write")
-    public String noticeWrite(Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value="file", required = false)MultipartFile file)  throws Exception  {
-        System.out.println("file:" + file);
-                if(!file.isEmpty()){
-            System.out.println("file:" + file);
-           noticeSaveDto.setFileSeq(fileService.saveFile(file));
+    public String noticeWrite(HttpSession request, Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
+
+        Member user = (Member) request.getAttribute("user");
+        if(user == null){
+            return "member/login";
+        }
+        noticeSaveDto.setMbUserName(user.getMbUserName());
+        System.out.println("noticeSaveDto = " + noticeSaveDto.getMbUserName());
+        if (!file.isEmpty()) {
+            noticeSaveDto.setFileSeq(fileService.saveFile(file));
+            noticeService.saveNotice(noticeSaveDto);
+        } else {
             noticeService.saveNotice(noticeSaveDto);
         }
 
@@ -74,6 +83,7 @@ public class BoardController {
         model.addAttribute("noticeList", noticeList);
         return "board/notice_list";
     }
+
     /**
      * method         : noticeDetail
      * author         : 오동준
@@ -82,19 +92,19 @@ public class BoardController {
      */
 
     @GetMapping("/board/notice/view/{seq}")
-    public String noticeDetail(@PathVariable Long seq, Model model){
+    public String noticeDetail(@PathVariable Long seq, Model model) {
         NoticeViewDto noticeSaveDto = noticeService.searchNoticeView(seq);
         model.addAttribute("noticeSaveDto", noticeSaveDto);
         return "board/notice_view";
     }
 
     @PostMapping("/board/notice/delete")
-    public ResponseEntity<?> deleteNotice(@RequestBody Map<String, String> requestBody){
+    public ResponseEntity<?> deleteNotice(@RequestBody Map<String, String> requestBody) {
 
         Long seq = Long.parseLong(requestBody.get("seq"));
 
         Notice notice = noticeRepository.findById(seq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
-        if(notice == null){
+        if (notice == null) {
             return ResponseEntity.badRequest().body("해당 게시글이 없습니다.");
         }
 

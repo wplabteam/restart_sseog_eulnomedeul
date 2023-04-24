@@ -39,6 +39,7 @@ public class NoticeService {
     public void saveNotice(NoticeSaveDto noticeSaveDto) {
         Notice notice = new Notice();
 
+        notice.setMbUserName(noticeSaveDto.getMbUserName());
         notice.setNtTitle(noticeSaveDto.getNtTitle());
         notice.setNtContent(noticeSaveDto.getNtContent());
         notice.setFileSeq(noticeSaveDto.getFileSeq());

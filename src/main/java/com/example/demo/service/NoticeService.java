@@ -28,7 +28,6 @@ public class NoticeService {
     private final FileService fileService;
 
 
-
     /**
      * method         : saveNotice
      * author         : 오동준
@@ -78,9 +77,13 @@ public class NoticeService {
         notice.setCount(notice.getCount() + 1);
 
         File noticeFile = fileService.findById(noticeViewDto.getFileSeq());
-        if(noticeFile != null){
+        if (noticeFile != null){
             noticeViewDto.setFile(noticeFile);
+        } else {
+            noticeViewDto.setFile(null);
         }
+
+
         return noticeViewDto;
     }
 

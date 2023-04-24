@@ -88,7 +88,7 @@
                         </div>
                         <div class="file-list-wrap-board">
                             <div class="file-list">
-                                <a  th:href="@{/download(fileSeq=${noticeSaveDto.file.getSeq()})}" th:text="${noticeSaveDto.file.getFileOriginalName()}">빌려요 대부업체 리스트.pdf</a>
+                                <a th:if="${noticeSaveDto.file != null}"  th:href="@{/download(fileSeq=${noticeSaveDto.file.getSeq()})}" th:text="${noticeSaveDto.file.getFileOriginalName()}">빌려요 대부업체 리스트.pdf</a>
                             </div>
                         </div>
                     </div>

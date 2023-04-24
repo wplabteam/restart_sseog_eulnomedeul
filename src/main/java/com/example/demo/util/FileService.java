@@ -61,7 +61,9 @@ public class FileService {
      */
 
     public File findById(Long fileSeq) {
+        if(fileSeq == null){
+            return null;
+        }
 
-        return fileRepository.findById(fileSeq).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
-    }
+        return fileRepository.findById(fileSeq).orElse(null);}
 }

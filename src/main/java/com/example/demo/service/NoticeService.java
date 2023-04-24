@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.NoticeSearchDto;
 import com.example.demo.notice.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.entity.File;
@@ -56,9 +57,9 @@ public class NoticeService {
      * date           : 2023/04/18
      * description    : 공지사항 리스트
      */
-    public List<Notice> searchNoticeList() {
+    public List<Notice> searchNoticeList(NoticeSearchDto noticeSearchDto) {
 
-        return noticeRepositoryImpl.searchNoticeList();
+        return noticeRepositoryImpl.searchNoticeList(noticeSearchDto);
 
     }
 

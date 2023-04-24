@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.NoticeSearchDto;
 import com.example.demo.entity.Member;
 import com.example.demo.notice.dto.NoticeSaveDto;
 import com.example.demo.dto.NoticeViewDto;
@@ -76,9 +77,9 @@ public class BoardController {
      * description    : 공지사항 리스트
      */
     @GetMapping("/board/notice/list")
-    public String noticeList(Model model) {
+    public String noticeList(Model model , @ModelAttribute("noticeSearchDto") NoticeSearchDto noticeSearchDto) {
 
-        List<Notice> noticeList = noticeService.searchNoticeList();
+        List<Notice> noticeList = noticeService.searchNoticeList(noticeSearchDto);
 
         model.addAttribute("noticeList", noticeList);
         return "board/notice_list";

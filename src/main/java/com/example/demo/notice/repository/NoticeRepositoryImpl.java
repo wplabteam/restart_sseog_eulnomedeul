@@ -1,10 +1,12 @@
 package com.example.demo.notice.repository;
 
+import com.example.demo.dto.NoticeSearchDto;
 import com.example.demo.dto.NoticeViewDto;
 import com.example.demo.notice.entity.Notice;
 import com.example.demo.notice.entity.QNotice;
 import com.example.demo.notice.repository.NoticeRepositoryCustom;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -39,7 +41,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
         return content;
     }
 
-    public List<Notice> searchNoticeList() {
+    public List<Notice> searchNoticeList(NoticeSearchDto searchDto) {
 
         QNotice notice = QNotice.notice;
 
@@ -57,9 +59,17 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                         notice.ntRegDate
                 ))
                 .from(notice)
-                .where(notice.ntIsDel.eq("N"))
+                .where(
+                        condTitleContain(searchDto.getKeyword()),
+                        notice.ntIsDel.eq("N")
+                )
                 .orderBy(notice.seq.desc())
                 .fetch();
         return content;
+    }
+
+    // 키워드 검색
+    private BooleanExpression condTitleContain(String keyword) {
+        return keyword != null ? QNotice.notice.ntTitle.contains(keyword) : null;
     }
 }

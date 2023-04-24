@@ -95,7 +95,7 @@
                 </div>
                 <div class="list-button-wrap type-center">
                     <button class="list-button sec-3" onclick="javascript:history.back();">목록</button>
-                    <button  class="list-button sec-3" id="delBtn" >삭제</button>
+                    <button th:if="${session.user.mbUserName == noticeSaveDto.mbUserName}"  class="list-button sec-3" id="delBtn" >삭제</button>
                     <input type="hidden" th:value="${noticeSaveDto.seq}" id="ntSeq">
 
                 </div>

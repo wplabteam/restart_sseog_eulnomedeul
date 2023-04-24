@@ -54,6 +54,31 @@
     .write-btn:hover {
         background-color: #0069d9;
     }
+    .form-search {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 10px;
+        padding: 10px;
+    }
+
+    .form-search input[type="text"] {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        margin-right: 5px;
+        padding: 5px;
+    }
+
+    .form-search button[type="submit"] {
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        padding: 5px 10px;
+    }
+
 </style>
 <body>
 <header>
@@ -77,6 +102,14 @@
     </tr>
     </thead>
     <tbody>
+    <div class="list-top">
+        <div class="list-searchbox">
+            <form id="frmSearch" name="frmSearch" th:action th:object="${noticeSearchDto}" method="GET">
+                <input type="text" th:field="*{keyword}">
+                <button type="submit">검색</button>
+            </form>
+        </div>
+    </div>
     <th:block th:if="${noticeList.isEmpty()}">
         <tr>
             <td>등록된 데이터가 없습니다.</td>
@@ -93,6 +126,7 @@
             <td th:text="${list.count}">0</td>
         </tr>
     </th:block>
+
     </tbody>
 </table>
 

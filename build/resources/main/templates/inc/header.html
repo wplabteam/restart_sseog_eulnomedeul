@@ -8,31 +8,30 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li><a th:href="@{/kakaoMap}">카카오 지도 api</a></li>
                     <li><a th:href="@{/blood/list}">혈당체크</a></li>
-                    <li><a th:href="@{/board/pwChk}">JWT</a></li>
                     <li><a th:href="@{/board/notice/list}">파일첨부</a></li>
-                    <li><a th:href="@{/member/join}">회원가입</a></li>
+                    <li th:if="${session.user == null}"><a th:href="@{/member/join}">회원가입</a></li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                <div th:if="${session.user != null}" class="navbar-text ms-3">
+                    <span th:text="${session.user.mbName}"></span>님 환영합니다.
+                    <a th:href="@{/member/logout}" class="ms-2">로그아웃</a>
+                </div>
+                <div th:if="${session.user == null}" class="navbar-text ms-3">
+                    <a th:href="@{/member/login}">로그인</a>
+                </div>
             </div>
         </div>
     </nav>
 
 
-
-
-
-
-
-
-
-<!--    <nav>-->
-<!--        <li><a th:href="@{/kakaoMap}">카카오 지도 api</a></li>-->
-<!--        <li><a th:href="@{/blood/list}">혈당체크</a></li>-->
-<!--        <li><a th:href="@{/board/pwChk}">JWT</a></li>-->
-<!--        <li><a th:href="@{/board/notice/list}">파일첨부</a></li>-->
-<!--        <li><a th:href="@{/member/join}">회원가입</a></li>-->
-<!--    </nav>-->
+    <!--    <nav>-->
+    <!--        <li><a th:href="@{/kakaoMap}">카카오 지도 api</a></li>-->
+    <!--        <li><a th:href="@{/blood/list}">혈당체크</a></li>-->
+    <!--        <li><a th:href="@{/board/pwChk}">JWT</a></li>-->
+    <!--        <li><a th:href="@{/board/notice/list}">파일첨부</a></li>-->
+    <!--        <li><a th:href="@{/member/join}">회원가입</a></li>-->
+    <!--    </nav>-->
 </th:block>

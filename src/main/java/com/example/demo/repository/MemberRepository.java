@@ -7,4 +7,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Long countByMbUserName(String mbId);
 
+    Member findByMbUserName(String mbUserName);
 }

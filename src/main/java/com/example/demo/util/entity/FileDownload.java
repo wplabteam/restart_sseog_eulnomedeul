@@ -19,7 +19,15 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 public class FileDownload {
     private final FileService fileService;
-
+/**
+ * method         : fileDownload
+ * author         : 오동준
+ * date           : 2023/04/24
+ * description    : 파일 다운로드
+ *
+ * 현재 각자 local을 바라보고 작업 중이기 때문에 본인이 파일 첨부한 것만 다운로드 받을수 있습니다.
+ * mac은 "//"  윈도우는 "\\" 으로 경로를 구분합니다.
+ */
     @GetMapping("/download")
     public void fileDownload(@RequestParam("fileSeq") Long fileSeq, HttpServletResponse response) throws IOException {
         try {

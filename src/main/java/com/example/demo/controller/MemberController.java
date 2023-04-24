@@ -8,12 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +20,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
      * method         : join
@@ -59,12 +59,11 @@ public class MemberController {
 
     @PostMapping("/join/write")
     public String joinProc(@ModelAttribute("memberSaveDto") Member memberSaveDto) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         memberSaveDto.setMbPassword(passwordEncoder.encode(memberSaveDto.getMbPassword()));
         memberService.join(memberSaveDto);
 
         return "/member/login";
     }
-
 
 }

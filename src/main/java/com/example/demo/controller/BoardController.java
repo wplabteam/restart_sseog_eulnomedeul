@@ -26,21 +26,7 @@ public class BoardController {
     private final FileService fileService;
     private final NoticeService noticeService;
 
-    @RequestMapping("/board/pwChk")
-    public String pwChk() {
 
-        return "board/pwChk";
-
-    }
-
-    @PostMapping("/board/pwChk")
-    public String pwChk(@RequestParam(value = "password" ,required = false) String password , @RequestParam(value="name" , required = false) String name) {
-        System.out.println("name:" + name);
-        System.out.println("pw:" + password);
-        // 입력한 값 화면에 출력하기
-
-        return "board/pwChk";
-    }
 
     /**
      * method         : noticeWrite
@@ -71,7 +57,7 @@ public class BoardController {
             noticeService.saveNotice(noticeSaveDto);
         }
 
-        return "redirect:/board/notice/write";
+        return "redirect:/board/notice/list";
     }
 
     /**

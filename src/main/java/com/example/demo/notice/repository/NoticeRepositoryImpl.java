@@ -56,6 +56,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                 ))
                 .from(notice)
                 .where(notice.ntIsDel.eq("N"))
+                .orderBy(notice.seq.desc())
                 .fetch();
         return content;
     }

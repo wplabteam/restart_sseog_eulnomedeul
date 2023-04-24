@@ -38,7 +38,11 @@ public class BoardController {
      * description    : 공지사항 작성 페이지
      */
     @RequestMapping("/board/notice/write")
-    public String noticeWrite(Model model, Notice noticeSaveDto) {
+    public String noticeWrite(Model model, Notice noticeSaveDto, HttpSession request) {
+        Member user = (Member) request.getAttribute("user");
+        if (user == null) {
+            return "member/login";
+        }
         model.addAttribute("noticeSaveDto", noticeSaveDto);
 
         return "board/notice_write";

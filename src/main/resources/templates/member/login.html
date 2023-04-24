@@ -47,6 +47,20 @@
         input[type="submit"]:hover {
             background-color: #16A085;
         }
+        .message-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: blue;
+        }
+
     </style>
 </head>
 <body>
@@ -59,5 +73,9 @@
 
     <input type="submit" value="로그인">
 </form>
+<div class="message-container">
+    <div class="message" th:if="${msg}">[[${msg}]]</div>
+</div>
+<!--<p th:if="${msg}" style="color: red;">[[${msg}]]</p>-->
 </body>
 </html>

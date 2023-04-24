@@ -57,7 +57,7 @@
             box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.1);
         }
 
-        input[type="submit"] {
+        input[type="button"] {
             background-color: #3498db;
             color: #ffffff;
             cursor: pointer;
@@ -69,7 +69,7 @@
             transition: background-color 0.3s ease-in-out;
         }
 
-        input[type="submit"]:hover {
+        input[type="button"]:hover {
             background-color: #2980b9;
         }
 
@@ -110,7 +110,7 @@
 <body>
 <h1>혈당 체크</h1>
 
-<form method="POST" id="frmForm" name="frmForm">
+<form id="frmForm" name="frmForm">
     <label for="userName">이름<span style="color:red">*</span></label>
     <input type="text" id="userName" name="userName" required><br><br>
 
@@ -135,14 +135,14 @@
     <label for="bloodConcentration">혈당 농도<span style="color:red">*</span></label>
     <input type="text" id="bloodConcentration" name="bloodConcentration" required min="0" max="300"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"><br><br>
 
-    <label for="isHungry">공복여부*</label>
+    <label for="isHungry">공복 여부<span style="color:red">*</span></label>
     <select id="isHungry" name="isHungry" required>
         <option value="">-- 선택 --</option>
         <option value="Y">예</option>
         <option value="N">아니오</option>
     </select><br><br>
     <a href="/blood/list" class="list-button">목록</a>
-    <input type="submit" value="제출" id="save_button">
+    <input type="button" value="제출" id="save_button">
 </form>
 </body>
 <div id="daum-postcode-bg" class="daum-postcode-bg"></div>
@@ -199,10 +199,11 @@
             alert("혈당농도를 입력해주세요.")
             return false;
         }
+
         let formData = new FormData(document.getElementById("frmForm"))
-        document.querySelectorAll(".isEmptyStomach").forEach(tag => {
-            tag.addEventListener("click", () => {
-                formData.append("isEmptyStomach", tag.value);
+        document.querySelectorAll(".isHungry").forEach(tag => {
+            tag.addEventListener("change", () => {
+                formData.append("isHungry", tag.value);
             })
         })
 
@@ -210,7 +211,6 @@
         fetch('/blood/save', {
             method: 'POST',
             body: formData
-
         })
             .then(response => response.json())
             .then(data => {
@@ -257,4 +257,5 @@
             emailInput.setCustomValidity('');
         }
     });
+
 </script>

@@ -76,8 +76,9 @@ public class MemberController {
      */
 
     @RequestMapping("/member/login")
-    public String login(Model model) {
+    public String login(@RequestParam(name = "returnUrl", required = false) String returnUrl,Model model) {
         model.addAttribute("memberSaveDto", new Member());
+        model.addAttribute("returnUrl", returnUrl);
         return "/member/login";
     }
 /**
@@ -89,14 +90,7 @@ public class MemberController {
 
     @PostMapping("/member/login")
     public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model) {
-        Member member = memberRepository.findByMbUserName(memberSaveDto.getMbUserName());
-        if (member != null && passwordEncoder.matches(memberSaveDto.getMbPassword(), member.getMbPassword())) {
-            session.setAttribute("user", member);
-            return "redirect:/";
-        } else {
-            model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "/member/login";
-        }
+        return memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword(), session, model);
     }
 
 /**

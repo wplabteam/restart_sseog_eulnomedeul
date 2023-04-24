@@ -41,7 +41,8 @@ public class BoardController {
     public String noticeWrite(Model model, Notice noticeSaveDto, HttpSession request) {
         Member user = (Member) request.getAttribute("user");
         if (user == null) {
-            return "member/login";
+            model.addAttribute("memberSaveDto", new Member());
+            return "/member/login";
         }
         model.addAttribute("noticeSaveDto", noticeSaveDto);
 

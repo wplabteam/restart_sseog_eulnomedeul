@@ -108,7 +108,7 @@
     <div class="list-top">
         <div class="list-searchbox">
             <form id="frmSearch" name="frmSearch" th:action th:object="${noticeSearchDto}" method="GET">
-                <input type="text" th:field="*{keyword}">
+                <input type="text" id="keyWord" th:field="*{keyword}">
                 <button type="submit">검색</button>
             </form>
         </div>
@@ -135,3 +135,11 @@
 
 </body>
 </html>
+<script>
+    document.getElementById("frmSearch").onsubmit = function () {
+        if (document.getElementById("keyWord").value === ""){
+            alert("검색어를 입력해주세요.");
+            return false;
+        }
+    }
+</script>

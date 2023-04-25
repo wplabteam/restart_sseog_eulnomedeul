@@ -75,7 +75,8 @@
     <input type="submit" value="로그인">
 </form>
 <div class="message-container">
-    <div class="message" th:if="${msg}">[[${msg}]]</div>
+    <div class="message" th:if="${msg != null}">[[${msg}]]</div>
+    <div class="message" th:if="${msg == null}">로그인 해주세요.</div>
 </div>
 <!--<p th:if="${msg}" style="color: red;">[[${msg}]]</p>-->
 </body>

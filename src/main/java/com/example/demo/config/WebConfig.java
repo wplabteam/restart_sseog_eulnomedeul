@@ -74,8 +74,7 @@ public class WebConfig implements WebMvcConfigurer {
             if (member == null) {
                 response.setContentType("text/html; charset=UTF-8");
                 PrintWriter out = response.getWriter();
-                out.println("<script>alert('로그인이 필요합니다.');location.href='/member/login';</script>");
-                out.flush();
+                out.println("<script>location.href='/common/modal?msg=로그인이 필요합니다.&url=/member/login';</script>");
                 return false;
             } else {
                 return true;

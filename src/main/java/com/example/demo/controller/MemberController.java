@@ -89,10 +89,9 @@ public class MemberController {
  */
 
     @PostMapping("/member/login")
-    public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model ,
-                            @RequestParam(name = "returnUrl", required = false) String returnUrl) {
+    public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model) {
 
-        return memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword(), session, model, returnUrl);
+        return memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword(), session, model);
     }
 
 /**

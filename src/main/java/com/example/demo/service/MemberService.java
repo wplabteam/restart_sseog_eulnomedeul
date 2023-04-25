@@ -30,16 +30,13 @@ public class MemberService {
  * description    : 로그인처리
  *
  */
-    public String login(String mbUserName, String mbPassword, HttpSession session, Model model, String returnUrl) {
+    public String login(String mbUserName, String mbPassword, HttpSession session, Model model) {
 
         Member member = memberRepository.findByMbUserName(mbUserName);
 
         if (member != null && passwordEncoder.matches(mbPassword, member.getMbPassword())) {
             session.setAttribute("user", member);
 
-            if (returnUrl != null) {
-                return "redirect:/" + returnUrl;
-            }
             return "redirect:/";
 
         } else {

@@ -65,7 +65,6 @@
 </head>
 <body>
 <form name="frmForm" method="POST" action="/member/login" th:object="${memberSaveDto}">
-    <input type="hidden" name="returnUrl" id="return-url">
     <label for="name-input">이름:</label>
     <input type="text" id="name-input" th:field="*{mbUserName}" required>
 
@@ -76,17 +75,7 @@
 </form>
 <div class="message-container">
     <div class="message" th:if="${msg != null}">[[${msg}]]</div>
-    <div class="message" th:if="${msg == null}">로그인 해주세요.</div>
 </div>
 <!--<p th:if="${msg}" style="color: red;">[[${msg}]]</p>-->
 </body>
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var returnUrlInput = document.getElementById('return-url');
-        var originalUrl = document.referrer;
-        var splitUrl = originalUrl.split("/");
-        const relativeUrl = splitUrl.slice(3).join("/");
-        returnUrlInput.value = relativeUrl;
-    });
-</script>

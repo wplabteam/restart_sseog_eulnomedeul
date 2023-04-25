@@ -38,12 +38,8 @@ public class BoardController {
      * description    : 공지사항 작성 페이지
      */
     @RequestMapping("/board/notice/write")
-    public String noticeWrite(Model model, Notice noticeSaveDto, HttpSession request) {
-        Member user = (Member) request.getAttribute("user");
-        if (user == null) {
-            model.addAttribute("memberSaveDto", new Member());
-            return "/member/login";
-        }
+    public String noticeWrite(Model model, Notice noticeSaveDto) {
+
         model.addAttribute("noticeSaveDto", noticeSaveDto);
 
         return "board/notice_write";
@@ -60,11 +56,8 @@ public class BoardController {
     public String noticeWrite(HttpSession request, Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
 
         Member user = (Member) request.getAttribute("user");
-        if(user == null){
-            return "member/login";
-        }
+
         noticeSaveDto.setMbUserName(user.getMbUserName());
-        System.out.println("noticeSaveDto = " + noticeSaveDto.getMbUserName());
         if (!file.isEmpty()) {
             noticeSaveDto.setFileSeq(fileService.saveFile(file));
             noticeService.saveNotice(noticeSaveDto);
@@ -82,7 +75,7 @@ public class BoardController {
      * description    : 공지사항 리스트
      */
     @GetMapping("/board/notice/list")
-    public String noticeList(Model model , @ModelAttribute("noticeSearchDto") NoticeSearchDto noticeSearchDto) {
+    public String noticeList(Model model, @ModelAttribute("noticeSearchDto") NoticeSearchDto noticeSearchDto) {
 
         List<Notice> noticeList = noticeService.searchNoticeList(noticeSearchDto);
 
@@ -100,8 +93,14 @@ public class BoardController {
     @GetMapping("/board/notice/view/{seq}")
     public String noticeDetail(@PathVariable Long seq, Model model) {
         NoticeViewDto noticeSaveDto = noticeService.searchNoticeView(seq);
-        model.addAttribute("noticeSaveDto", noticeSaveDto);
-        return "board/notice_view";
+        if (noticeSaveDto == null) {
+            return "redirect:/board/notice/list";
+        } else {
+            model.addAttribute("noticeSaveDto", noticeSaveDto);
+            return "board/notice_view";
+
+        }
+
     }
 
     @PostMapping("/board/notice/delete")
@@ -109,13 +108,7 @@ public class BoardController {
 
         Long seq = Long.parseLong(requestBody.get("seq"));
 
-        Notice notice = noticeRepository.findById(seq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
-        if (notice == null) {
-            return ResponseEntity.badRequest().body("해당 게시글이 없습니다.");
-        }
-
-        notice.setNtIsDel("Y");
-        noticeRepository.save(notice);
+        noticeService.deleteNotice(seq);
 
         return ResponseEntity.ok(Map.of("result", "success"));
 

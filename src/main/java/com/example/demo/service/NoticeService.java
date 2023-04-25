@@ -75,10 +75,13 @@ public class NoticeService {
         NoticeViewDto noticeViewDto = noticeRepositoryImpl.searchNoticeView(seq);
 
         Notice notice = noticeRepository.findById(seq).get();
-        notice.setCount(notice.getCount() + 1);
+        if (notice.getNtIsDel().equals("Y")) {
+            return null;
+        }
 
+        notice.setCount(notice.getCount() + 1);
         File noticeFile = fileService.findById(noticeViewDto.getFileSeq());
-        if (noticeFile != null){
+        if (noticeFile != null) {
             noticeViewDto.setFile(noticeFile);
         } else {
             noticeViewDto.setFile(null);
@@ -89,4 +92,10 @@ public class NoticeService {
     }
 
 
+    public void deleteNotice(Long seq) {
+
+        Notice notice = noticeRepository.findById(seq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
+        notice.setNtIsDel("Y");
+        noticeRepository.save(notice);
+    }
 }

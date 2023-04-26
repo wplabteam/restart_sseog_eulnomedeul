@@ -36,16 +36,31 @@ public class SmsService {
                     "&sender=" + sender +
                     "&receiver=" + receiver +
                     "&message=";
-
+            // Charset : 문자 인코딩을 나타내는 자바 클래스
+            // 즉 문자열을 byte[]로 변환할 때 사용하는 인코딩 방식을 지정 할수 있다 .
+            // euc-kr : 한글 인코딩 방식
+            // UTF-8 : 유니코드 인코딩 방식
+            // ISO-8859-1 : 영어 인코딩 방식
+            // getBytes() : 문자열을 byte[]로 변환
+            // 사람언어로 들어온 메시지를 컴퓨터가 이해할 수 있게 변환 (인코딩)
             byte[] byteArray = message.getBytes(Charset.forName("euc-kr"));
+
+            /**
+             * StringBuilder : 문자열을 조작하기 위한 클래스  문자열에 대해 다양한 연산을 수행할 수 있음
+             * 예) 문자열 추가, 문자열 삽입, 문자열 삭제, 문자열 변경 등
+             * */
             StringBuilder hexBuilder = new StringBuilder();
 
             for (byte b : byteArray) {
                 // 16진수 format 변경(유니코드 포맷형 맞추기 위해 '%'붙힘)
+                // 2는 16진수를 2자리로 만들어줌
+                // 0은 빈자리는 0으로 채움
                 hexBuilder.append(String.format("%%%02X", b));
             }
+            //urlString에 message=뒤부터 문자열을 붙여줌
             urlString += hexBuilder.toString();
 
+            // new URL : 문자열 형식의 URL을 파싱하여 URL 객체를 생성하는 역할
             URL url = new URL(urlString);
 
             // HTTP 연결 설정
@@ -54,8 +69,22 @@ public class SmsService {
 
             // 응답코드 확인
             int responseCode = connection.getResponseCode();
+//            System.out.println("Response Code : " + responseCode);
+
+
 
             // 응답 데이터 읽기
+            // BUfferedReader : 문자 입력 스트림으로부터 문자를 읽어 들이기 위한 클래스 (문자 입력 스트림으로부터 문자를 읽어 들이기 위한 클래스)
+
+            // InputStreamReader : 바이트 입력 스트림에서 문자 입력 스트림으로 변환하는 클래스
+            //  바이트 스트림은 1바이트 단위로 데이터를 처리하지만 문자 스트림은 2바이트 단위로 데이터를 처리합니다
+
+            // connection.getInputStream()은 위코드 HttpURLConnection 객체에서 가져온 바이트 스트림으로
+            // InputStreamReader를 통해 문자 스트림으로 변환합니다
+            // 이렇게하면 BufferedReader를 통해 한 줄씩 읽을 수 있습니다
+
+            // readLine()은 BufferedReader 클래스의 메소드로, 한 줄씩 문자열을 읽어들입니다.
+            // 읽어들일 문자열이 없으면 null을 반환 while문 종료
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuilder response = new StringBuilder();

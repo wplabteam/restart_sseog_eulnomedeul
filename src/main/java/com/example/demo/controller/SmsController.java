@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * @RestController란 ? : @Controller는 주로 View를 반환하기 위해 사용되는 어노테이션이고 @RestController는 주로 JSON 형태로 객체 데이터를 반환하기 위해 사용되는 어노테이션이다.
+ * @ResponseBody : 리턴값을 JSON 형태로 반환
+ * @RequiredArgsConstructor : final이나 @NonNull인 필드 값만 파라미터로 받는 생성자를 만들어줌
+ * */
 @RestController
 @RequiredArgsConstructor
 public class SmsController {

@@ -132,7 +132,6 @@
     <input type="hidden" id="idChkResult">
 
 
-
     <label>비밀번호:</label>
     <input type="password" name="mbPassword" id="mbPassword"><br>
 
@@ -144,6 +143,16 @@
     <input type="email" name="mbEmail"><br>
     <input type="hidden" id="mbEmailChk" name="mbEmailChk" value=""><br>
 
+    <label>핸드폰 번호:</label>
+
+    <input type="text" id="hiPhoneNo" name="mbPhone" value="" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+
+    <button type="button" class="btn" id="btnCert">인증번호 받기</button>
+    <input type="text" name="mbVerificationCode" id="mbVerificationCode" placeholder="인증번호 입력">
+    <input type="hidden" id="isCertOk" value="">
+    <button type="button" th:id="btnCertConfirm" class="dup-check">확인</button>
+    <br>
+
 
     <label for="postcode">주소:</label>
     <input type="hidden" name="postcode" id="postcode">
@@ -154,8 +163,8 @@
     <input type="text" placeholder="상세주소 입력" name="mbDetailAddress" id="mbDetailAddress">
 
 </form>
-    <input type="button" id="btnJoin" value="회원가입">
-    <input type="button" onclick="location.href='/'" value="홈">
+<input type="button" id="btnJoin" value="회원가입">
+<input type="button" onclick="location.href='/'" value="홈">
 
 </body>
 <div id="daum-postcode-bg" class="daum-postcode-bg"></div>
@@ -189,6 +198,53 @@
         document.getElementById('daum-postcode-bg').classList.remove('on');
         document.getElementById('daum-postcode').classList.remove('on');
     }
+
+    //  문자 인증번호
+    const btnCert = document.getElementById('btnCert');
+    btnCert.addEventListener('click', function () {
+        const mbPhone = document.getElementById('hiPhoneNo').value;
+
+        if (mbPhone === '') {
+            alert('핸드폰 번호를 입력해주세요.');
+            return false;
+        }
+        if (mbPhone.length < 11) {
+            alert('핸드폰 번호를 정확히 입력해주세요.');
+            return false;
+        }
+
+        fetch('/join/cert?mbPhone=' + encodeURIComponent(mbPhone), {
+            method: 'GET',
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            if (json.code === 200) {
+                alert('인증번호가 발송되었습니다.');
+            } else {
+                alert('인증번호 발송에 실패하였습니다.');
+            }
+        });
+
+
+
+        // fetch('/join/cert', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({mbPhone: mbPhone})
+        // }).then(function (response) {
+        //     return response.json();
+        // }).then(function (json) {
+        //     if (json.result === 'success') {
+        //         alert('인증번호가 발송되었습니다.');
+        //         $("#isCertOk").val("Y");
+        //     } else {
+        //         alert('인증번호 발송에 실패하였습니다.');
+        //         $("#isCertOk").val("N");
+        //     }
+        // });
+    });
 
     // POST CODE SAMPLE end
 
@@ -234,17 +290,15 @@
         let mbPasswordChk = $("#mbPasswordChk").val();
         let passwordResult = $("#passwordResult");
 
-        if(mbPassword == mbPasswordChk){
+        if (mbPassword == mbPasswordChk) {
             passwordResult.text("비밀번호가 일치합니다.");
-        }
-        else {
+        } else {
             passwordResult.text("비밀번호가 일치하지 않습니다.");
         }
-        if(passwordValidation() == false){
+        if (passwordValidation() == false) {
             passwordResult.text("비밀번호는 영문/숫자 포함 6~13자리로 입력해야합니다.");
         }
     });
-
 
 
     function validationCheck() {
@@ -333,13 +387,13 @@
     var emailInput = document.querySelector('input[name="mbEmail"]');
 
     // input 엘리먼트의 값이 변경될 때마다 이메일 유효성 검사를 수행합니다.
-    emailInput.addEventListener('keyup', function(event) {
+    emailInput.addEventListener('keyup', function (event) {
         var email = event.target.value;
         var emailResult = $("#mbEmailChk");
         if (isValidEmail(email)) {
             // 이메일 주소가 유효할 경우, input 엘리먼트의 배경색을 흰색으로 변경합니다.
             event.target.style.backgroundColor = 'white';
-               emailResult.val("Y");
+            emailResult.val("Y");
         } else {
             // 이메일 주소가 유효하지 않을 경우, input 엘리먼트의 배경색을 빨간색으로 변경합니다.
             event.target.style.backgroundColor = 'red';

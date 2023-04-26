@@ -31,6 +31,7 @@ import java.io.PrintWriter;
  * addInterceptors                  : 인터셉터를 등록하는 메소드입니다.
  * addArgumentResolvers             : 컨트롤러 메소드의 인자를 해결하는 리졸버를 등록하는 메소드입니다.
  * addReturnValueHandlers           : 컨트롤러 메소드의 반환 값을 처리하는 핸들러를 등록하는 메소드입니다.
+ * addPathPatterns : 인터셉터를 적용할 URL 패턴을 지정합니다.
  */
 
 @Configuration
@@ -51,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
      * <p>
      * HandlerInterceptorAdapter 는 HandlerInterceptor 인터페이스를 구현하고 있으며, HandlerInterceptor 인터페이스의 메서드를 오버라이드하여 구현합니다.
      * <p>
-     * 메서드 설명
+     * 메소드 설명
      * preHandle        : 핸들러 메소드가 실행되기 전에 호출되는 메소드입니다. 핸들러 메소드의 실행 여부를 결정하는 boolean 값을 반환합니다. 만약 false를 반환하면, 핸들러 메소드가 실행되지 않습니다.
      * postHandle       : 핸들러 메소드가 실행된 후, 화면이 렌더링 되기 전에 호출되는 메소드입니다.
      * afterCompletion  : 핸들러 메소드가 실행된 후, 화면이 렌더링 된 후에 호출되는 메소드입니다.

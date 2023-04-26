@@ -24,6 +24,8 @@ public class Member {
     private String mbUserName;
     // 회원 비밀번호
     private String mbPassword;
+    // 회원 전화번호
+    private String mbPhone;
     // 회원 이메일
     private String mbEmail;
     // 회원 주소

@@ -115,6 +115,7 @@
 
         ext = filename.split(".").pop();
         let file_type = $("#file_type01");
+        // $.inArray() 함수는 찾는 요소가 배열에 있을때는 1을 반환 , 없을 때 -1을 반환한다.
         if ($.inArray(ext, ['pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'doc', 'docx', 'jpg', 'jpeg', 'gif', 'txt']) > -1) {
             document.getElementById("filename").style.display = "inline-block";
             document.getElementById("btn_del").style.display = "inline-block";

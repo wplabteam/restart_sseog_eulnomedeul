@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.common.JSONResponse;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -22,6 +25,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final SmsService smsService;
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
@@ -105,6 +109,19 @@ public class MemberController {
 public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/";
+}
+
+@GetMapping("/join/cert")
+@ResponseBody
+public JSONResponse<?> getPhoneCerNo(@RequestParam("mbPhone") String mbPhone, HttpServletRequest request) {
+    String ranCertNo = smsService.getCertRandomNo(4,2);
+    System.out.println("인증번호 : " + ranCertNo);
+    System.out.println("넘어온 폰 넘버 확인 : " +mbPhone);
+
+    Map result = smsService.send(mbPhone, "본인확인을 위해 인증번호<br>[" + ranCertNo + "]를 입력해주세요.");
+    System.out.println("result : " + result);
+    request.getSession().setAttribute(mbPhone, ranCertNo);
+    return new JSONResponse<>(200, "SUCCESS", null);
 }
 
 }

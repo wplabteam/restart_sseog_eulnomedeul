@@ -148,7 +148,7 @@
     <input type="text" id="hiPhoneNo" name="mbPhone" value="" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
     <button type="button" class="btn" id="btnCert">인증번호 받기</button>
-    <input type="text" name="mbVerificationCode" id="mbVerificationCode" placeholder="인증번호 입력">
+    <input type="text" name="certNo" id="certNo" placeholder="인증번호 입력">
     <input type="hidden" id="isCertOk" value="">
     <button type="button" th:id="btnCertConfirm" class="dup-check">확인</button>
     <br>
@@ -225,181 +225,210 @@
             }
         });
 
+    })
 
+    const btnCertConfirm = document.getElementById('btnCertConfirm');
 
-        // fetch('/join/cert', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({mbPhone: mbPhone})
-        // }).then(function (response) {
-        //     return response.json();
-        // }).then(function (json) {
-        //     if (json.result === 'success') {
-        //         alert('인증번호가 발송되었습니다.');
-        //         $("#isCertOk").val("Y");
-        //     } else {
-        //         alert('인증번호 발송에 실패하였습니다.');
-        //         $("#isCertOk").val("N");
-        //     }
-        // });
-    });
+    btnCertConfirm.addEventListener('click', function () {
+        const certNo = document.getElementById('certNo').value;
 
-    // POST CODE SAMPLE end
+        if (certNo === '') {
+            alert('인증번호를 입력해주세요.');
+            return false;
+        }
 
-    //idChk 눌렀을때 fetch 사용해서 중복확인
-    const idChk = document.getElementById('idChk');
-    idChk.addEventListener('click', function () {
-        const mbId = document.getElementById('mbUserName').value;
-        fetch('/join/idChk', {
+        const mbPhone = document.getElementById('hiPhoneNo').value;
+
+        fetch('/join/cert', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({mbId: mbId})
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            if (json.result === 'success') {
-                alert('사용 가능한 아이디입니다.');
-                $("#idChkResult").val("Y");
-            } else {
-                alert('이미 사용중인 아이디입니다.');
-                $("#idChkResult").val("N");
+            body: JSON.stringify
+            ({
+                "mbPhone" : mbPhone,
+                "certNo"  : certNo
+            })
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.code === 500) {
+                    alert('인증번호 발송후 확인 버튼을 눌러주세요');
+                    return false;
+                }
+                if (json.code === 200) {
+                    alert('인증되었습니다.');
+                    document.getElementById('isCertOk').value = 'Y';
+                } else {
+                    alert('인증번호가 일치하지 않습니다.');
+                }
+            })
+            .catch(error => {
+                alert('오류가 발생했습니다: ' + error);
+
+            })
+    })
+
+        // POST CODE SAMPLE end
+
+        //idChk 눌렀을때 fetch 사용해서 중복확인
+        const idChk = document.getElementById('idChk');
+        idChk.addEventListener('click', function () {
+            const mbId = document.getElementById('mbUserName').value;
+            fetch('/join/idChk', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({mbId: mbId})
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                if (json.result === 'success') {
+                    alert('사용 가능한 아이디입니다.');
+                    $("#idChkResult").val("Y");
+                } else {
+                    alert('이미 사용중인 아이디입니다.');
+                    $("#idChkResult").val("N");
+                }
+            });
+        });
+
+        $("#btnJoin").click(function () {
+            if (validationCheck()) {
+                alert("회원가입이 완료되었습니다.");
+                document.frmJoin.submit();
             }
         });
-    });
 
-    $("#btnJoin").click(function () {
-        if (validationCheck()) {
-            alert("회원가입이 완료되었습니다.");
-            document.frmJoin.submit();
-        }
-    });
+        // mbPassword 키업 이벤트 발생시 passwordResult 초기화
+        $("#mbPassword").keyup(function () {
+            let passwordResult = $("#passwordResult");
+            passwordResult.text("");
+        });
 
-    // mbPassword 키업 이벤트 발생시 passwordResult 초기화
-    $("#mbPassword").keyup(function () {
-        let passwordResult = $("#passwordResult");
-        passwordResult.text("");
-    });
+        // mbPasswordChk 키업 이벤트 발생시 mbPassword와 비교
+        $("#mbPasswordChk").keyup(function () {
+            let mbPassword = $("#mbPassword").val();
+            let mbPasswordChk = $("#mbPasswordChk").val();
+            let passwordResult = $("#passwordResult");
 
-    // mbPasswordChk 키업 이벤트 발생시 mbPassword와 비교
-    $("#mbPasswordChk").keyup(function () {
-        let mbPassword = $("#mbPassword").val();
-        let mbPasswordChk = $("#mbPasswordChk").val();
-        let passwordResult = $("#passwordResult");
-
-        if (mbPassword == mbPasswordChk) {
-            passwordResult.text("비밀번호가 일치합니다.");
-        } else {
-            passwordResult.text("비밀번호가 일치하지 않습니다.");
-        }
-        if (passwordValidation() == false) {
-            passwordResult.text("비밀번호는 영문/숫자 포함 6~13자리로 입력해야합니다.");
-        }
-    });
+            if (mbPassword == mbPasswordChk) {
+                passwordResult.text("비밀번호가 일치합니다.");
+            } else {
+                passwordResult.text("비밀번호가 일치하지 않습니다.");
+            }
+            if (passwordValidation() == false) {
+                passwordResult.text("비밀번호는 영문/숫자 포함 6~13자리로 입력해야합니다.");
+            }
+        });
 
 
-    function validationCheck() {
-        if ($("#mbName").val() == "") {
-            alert("이름을 입력해주세요.");
-            $("#mbName").focus();
-            return false;
-        }
-        if (idPolicyCheck() == false) {
-            alert("아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.");
-            $("#mbUserName").focus();
-            return false;
+        function validationCheck() {
+            if ($("#mbName").val() == "") {
+                alert("이름을 입력해주세요.");
+                $("#mbName").focus();
+                return false;
+            }
+            if (idPolicyCheck() == false) {
+                alert("아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.");
+                $("#mbUserName").focus();
+                return false;
 
-        }
-        if ($("#idChkResult").val() == '') {
-            alert("아이디 중복확인을 해주세요.");
-            $("#idChk").focus();
-            return false;
-        }
-        if ($("#idChkResult").val() == 'N') {
-            alert("이미 사용중인 아이디입니다.");
-            $("#idChk").focus();
-            return false;
-        }
-        if (passwordValidation() == false) {
-            alert("비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리로 입력해야합니다.");
-            $("#mbPassword").focus();
-            return false;
-        }
-        if ($("#mbPasswordChk").val() == '') {
-            alert("비밀번호를 확인을 입력해주세요.");
-            $("#mbPasswordChk").focus();
-            return false;
-        }
-        if ($("#mbPassword").val() != $("#mbPasswordChk").val()) {
-            alert("비밀번호가 일치하지 않습니다.");
-            $("#mbPasswordChk").focus();
-            return false;
-        }
+            }
+            if ($("#idChkResult").val() == '') {
+                alert("아이디 중복확인을 해주세요.");
+                $("#idChk").focus();
+                return false;
+            }
+            if ($("#idChkResult").val() == 'N') {
+                alert("이미 사용중인 아이디입니다.");
+                $("#idChk").focus();
+                return false;
+            }
+            if (passwordValidation() == false) {
+                alert("비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리로 입력해야합니다.");
+                $("#mbPassword").focus();
+                return false;
+            }
+            if ($("#mbPasswordChk").val() == '') {
+                alert("비밀번호를 확인을 입력해주세요.");
+                $("#mbPasswordChk").focus();
+                return false;
+            }
+            if ($("#mbPassword").val() != $("#mbPasswordChk").val()) {
+                alert("비밀번호가 일치하지 않습니다.");
+                $("#mbPasswordChk").focus();
+                return false;
+            }
 
-        if ($("#mbEmailChk") == 'N' || $("#mbEmailChk") == '') {
-            alert("이메일 형식이 올바르지 않습니다.");
-            $("#mbEmail").focus();
-            return false;
-        }
+            if ($("#mbEmailChk") == 'N' || $("#mbEmailChk") == '') {
+                alert("이메일 형식이 올바르지 않습니다.");
+                $("#mbEmail").focus();
+                return false;
+            }
 
-        if ($("#mbAddress").val() == '' || $("#mbDetailAddress") == '') {
-            alert("주소를 입력해주세요.");
-            $("#mbAddress").focus();
-            return false;
-        }
-        return true;
-    }
+            if($("#isCertOk").val() == ''){
+                alert("휴대폰 인증을 해주세요.");
+                $("#btnCert").focus();
+                return false;
+            }
 
-    //아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.
-    function idPolicyCheck() {
-        let userIdCheck = /^[A-Za-z0-9_\-]{6,13}$/;
-        if (!(userIdCheck.test($("#mbUserName").val()))) {
-            //alert('아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.');
-            return false;
-        } else {
+            if ($("#mbAddress").val() == '' || $("#mbDetailAddress") == '') {
+                alert("주소를 입력해주세요.");
+                $("#mbAddress").focus();
+                return false;
+            }
             return true;
         }
-    }
 
-    // 비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리
-    function passwordValidation() {
-        let userPwdCheck = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
-        if (!(userPwdCheck.test($("#mbPassword").val()))) {
-            //alert("비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리")
-            return false;
-        } else {
-            return true;
+        //아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.
+        function idPolicyCheck() {
+            let userIdCheck = /^[A-Za-z0-9_\-]{6,13}$/;
+            if (!(userIdCheck.test($("#mbUserName").val()))) {
+                //alert('아이디는 영문/숫자 포함 6~13자리로 입력해야합니다.');
+                return false;
+            } else {
+                return true;
+            }
         }
-    }
 
-
-    //이메일 양식이 올바르지 않습니다.
-    function isValidEmail(email) {
-        // 이메일 주소의 형식을 정규식으로 확인합니다.
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailRegex.test(email);
-    }
-
-    // 이메일 주소를 입력하는 input 엘리먼트를 가져옵니다.
-    var emailInput = document.querySelector('input[name="mbEmail"]');
-
-    // input 엘리먼트의 값이 변경될 때마다 이메일 유효성 검사를 수행합니다.
-    emailInput.addEventListener('keyup', function (event) {
-        var email = event.target.value;
-        var emailResult = $("#mbEmailChk");
-        if (isValidEmail(email)) {
-            // 이메일 주소가 유효할 경우, input 엘리먼트의 배경색을 흰색으로 변경합니다.
-            event.target.style.backgroundColor = 'white';
-            emailResult.val("Y");
-        } else {
-            // 이메일 주소가 유효하지 않을 경우, input 엘리먼트의 배경색을 빨간색으로 변경합니다.
-            event.target.style.backgroundColor = 'red';
-            emailResult.val("N");
+        // 비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리
+        function passwordValidation() {
+            let userPwdCheck = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
+            if (!(userPwdCheck.test($("#mbPassword").val()))) {
+                //alert("비밀번호는 영문, 숫자, 특수문자 8자리 - 15자리")
+                return false;
+            } else {
+                return true;
+            }
         }
-    });
+
+
+        //이메일 양식이 올바르지 않습니다.
+        function isValidEmail(email) {
+            // 이메일 주소의 형식을 정규식으로 확인합니다.
+            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+
+        // 이메일 주소를 입력하는 input 엘리먼트를 가져옵니다.
+        var emailInput = document.querySelector('input[name="mbEmail"]');
+
+        // input 엘리먼트의 값이 변경될 때마다 이메일 유효성 검사를 수행합니다.
+        emailInput.addEventListener('keyup', function (event) {
+            var email = event.target.value;
+            var emailResult = $("#mbEmailChk");
+            if (isValidEmail(email)) {
+                // 이메일 주소가 유효할 경우, input 엘리먼트의 배경색을 흰색으로 변경합니다.
+                event.target.style.backgroundColor = 'white';
+                emailResult.val("Y");
+            } else {
+                // 이메일 주소가 유효하지 않을 경우, input 엘리먼트의 배경색을 빨간색으로 변경합니다.
+                event.target.style.backgroundColor = 'red';
+                emailResult.val("N");
+            }
+        });
 
 
 </script>

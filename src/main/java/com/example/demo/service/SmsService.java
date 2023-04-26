@@ -20,6 +20,12 @@ public class SmsService {
     private final String passwd = "a1234567";
     private final String sender = "01096030024";
 
+    /**
+     * method         : send
+     * author         : 오동준
+     * date           : 2023/04/26
+     * description    : 문자 발송
+     */
     public Map send(String receiver, String message) {
 
         Map result = new HashMap<String, Object>();
@@ -38,7 +44,6 @@ public class SmsService {
                 // 16진수 format 변경(유니코드 포맷형 맞추기 위해 '%'붙힘)
                 hexBuilder.append(String.format("%%%02X", b));
             }
-
             urlString += hexBuilder.toString();
 
             URL url = new URL(urlString);
@@ -59,8 +64,8 @@ public class SmsService {
             }
             reader.close();
             // 응답 출력
-            System.out.println("Response: " + response.toString());
-            System.out.println("message: " + message);
+//            System.out.println("Response: " + response.toString());
+//            System.out.println("message: " + message);
 
             // 연결 종료
             connection.disconnect();
@@ -75,6 +80,12 @@ public class SmsService {
         return result;
     }
 
+    /**
+     * method         : getCertRandomNo
+     * author         : 오동준
+     * date           : 2023/04/26
+     * description    : 인증번호 생성
+     */
 
     public static String getCertRandomNo(int len, int dupCd) {
 

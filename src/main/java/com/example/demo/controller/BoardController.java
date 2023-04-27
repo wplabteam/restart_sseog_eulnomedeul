@@ -91,16 +91,18 @@ public class BoardController {
      */
 
     @GetMapping("/board/notice/view/{seq}")
-    public String noticeDetail(@PathVariable Long seq, Model model) {
+    public String noticeDetail(@PathVariable Long seq, Model model){
+        // 공지사항 상세보기
         NoticeViewDto noticeSaveDto = noticeService.searchNoticeView(seq);
+
+        // noticeSaveDto가 null이면 공지사항 리스트로 이동
         if (noticeSaveDto == null) {
             return "redirect:/board/notice/list";
         } else {
+            // 공지사항 상세보기
             model.addAttribute("noticeSaveDto", noticeSaveDto);
             return "board/notice_view";
-
         }
-
     }
 
     @PostMapping("/board/notice/delete")

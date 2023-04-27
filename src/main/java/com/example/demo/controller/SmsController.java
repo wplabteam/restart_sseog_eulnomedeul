@@ -28,12 +28,16 @@ public class SmsController {
     public JSONResponse<?> getPhoneCerNo(@RequestParam("mbPhone") String mbPhone, HttpServletRequest request) {
         String ranCertNo = smsService.getCertRandomNo(4, 2);
 
+        // 인증번호 발송
         Map result = smsService.send(mbPhone, "본인확인을 위해 인증번호<br>[" + ranCertNo + "]를 입력해주세요.");
+
+        // 인증번호 발송 성공 시
         if (result != null) {
             // 세션에 인증번호 저장
             request.getSession().setAttribute(mbPhone, ranCertNo);
             return new JSONResponse<>(200, "SUCCESS", null);
         } else {
+            // 인증번호 발송 실패 시
             return new JSONResponse<>(400, "FAIL", null);
         }
 
@@ -48,9 +52,11 @@ public class SmsController {
     @PostMapping("/join/cert")
     @ResponseBody
     public JSONResponse<?> setPhoneCertNo(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        // 인증번호 확인
         String mbPhone = requestBody.get("mbPhone");
         String certNo = requestBody.get("certNo");
 
+        // 세션에서 인증번호 가져오기
         String sessionCertNo = (String) request.getSession().getAttribute(mbPhone);
 
         if (sessionCertNo == null) { // 세션에 인증번호가 없을 경우
@@ -60,6 +66,7 @@ public class SmsController {
             return new JSONResponse<>(200, "SUCCESS", null);
         }
 
+        // 인증번호가 일치하지 않을 경우
         return new JSONResponse<>(400, "FAIL", null);
     }
 

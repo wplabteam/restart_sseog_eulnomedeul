@@ -6,10 +6,6 @@ import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 @Service
@@ -23,29 +19,21 @@ public class MemberService {
         memberRepository.save(memberSaveDto);
     }
 
-/**
- * method         : login
- * author         : 오동준
- * date           : 2023/04/24
- * description    : 로그인처리
- *
- */
-    public String login(String mbUserName, String mbPassword, HttpSession session, Model model) {
+    /**
+     * method         : login
+     * author         : 오동준
+     * date           : 2023/04/24
+     * description    : 로그인처리
+     */
+    public Member login(String mbUserName, String mbPassword) {
 
         Member member = memberRepository.findByMbUserName(mbUserName);
-
-        if (member != null && passwordEncoder.matches(mbPassword, member.getMbPassword())) {
-            session.setAttribute("user", member);
-
-            return "redirect:/";
-
-        } else {
-
-            model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "member/login";
+        if (member != null) {
+            if (passwordEncoder.matches(mbPassword, member.getMbPassword())) {
+                return member;
+            }
         }
-
+        return null;
     }
-
 }
 

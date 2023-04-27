@@ -96,7 +96,19 @@ public class MemberController {
     @PostMapping("/member/login")
     public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model) {
 
-        return memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword(), session, model);
+        // 로그인 정보 조회 (아이디, 비밀번호)
+        Member member = memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword());
+
+        // 로그인 성공
+        if (member != null) {
+            session.setAttribute("user", member);
+            return "redirect:/";
+        } else {
+            // 로그인 실패
+            model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "/member/login";
+        }
+
     }
 
     /**

@@ -9,7 +9,6 @@ import com.example.demo.notice.repository.NoticeRepository;
 import com.example.demo.notice.repository.NoticeRepositoryImpl;
 import com.example.demo.util.FileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class NoticeService {
-    @Autowired
+
     private final NoticeRepository noticeRepository;
 
     private final NoticeRepositoryImpl noticeRepositoryImpl;
@@ -71,25 +70,41 @@ public class NoticeService {
      * description    : 공지사항 상세보기
      */
 
-    public NoticeViewDto searchNoticeView(Long seq) {
+    public NoticeViewDto searchNoticeView(Long seq){
         NoticeViewDto noticeViewDto = noticeRepositoryImpl.searchNoticeView(seq);
 
-        Notice notice = noticeRepository.findById(seq).get();
-        if (notice.getNtIsDel().equals("Y")) {
+        // url 변경으로 is_del 게시글일 경우 null 반환
+        if (noticeViewDto != null && noticeViewDto.getNtIsDel().equals("Y")) {
             return null;
         }
 
-        notice.setCount(notice.getCount() + 1);
-        File noticeFile = fileService.findById(noticeViewDto.getFileSeq());
-        if (noticeFile != null) {
-            noticeViewDto.setFile(noticeFile);
-        } else {
-            noticeViewDto.setFile(null);
+        // noticeViewDto 가 null 이 아닐 경우
+        if (noticeViewDto != null) {
+            try {
+                // 조회수 증가
+                Notice notice = noticeRepository.findById(seq)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. seq=" + seq));
+                notice.setCount(noticeViewDto.getCount() + 1);
+                noticeRepository.save(notice);
+
+                // 파일 조회
+                File noticeFile = fileService.findById(noticeViewDto.getFileSeq());
+                // 파일이 있을 경우
+                if (noticeFile != null) {
+                    noticeViewDto.setFile(noticeFile);
+                } else {
+                    // 파일이 없을 경우
+                    noticeViewDto.setFile(null);
+                }
+            } catch (Exception e) {
+                // 기타 예외 처리
+                e.printStackTrace();
+            }
+            return noticeViewDto;
         }
-
-
-        return noticeViewDto;
+        return null;
     }
+
 
 
     public void deleteNotice(Long seq) {

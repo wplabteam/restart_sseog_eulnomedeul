@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1" id="pay_sum">
+    <thead>
+    <tr>
+        <th rowspan="2" scope="col">날짜</th>
+        <th colspan="2" scope="colgroup">신용카드</th>
+        <th colspan="2" scope="colgroup">계좌 이체</th>
+        <th rowspan="2" scope="col">취소 금액</th>
+        <th colspan="2" scope="colgroup">합계</th>
+
+    </tr>
+    <tr class="row2">
+
+        <th scope="col">건수</th>
+        <th scope="col">금액</th>
+        <th scope="col">건수</th>
+        <th scope="col">금액</th>
+        <th scope="col">건수</th>
+        <th scope="col">금액</th>
+
+    </tr>
+    </thead>
+
+    <tr>
+        <td>2023-03-10</td>
+        <td>1건</td>
+        <td>197,000원</td>
+        <td>3건</td>
+        <td>400,000원</td>
+        <td>200,000원</td>
+        <td>4건</td>
+        <td>200,000원</td>
+    </tr>
+    <tr>
+        <td>2023-03-11</td>
+        <td>4건</td>
+        <td>0원</td>
+        <td>3건</td>
+        <td>100,000원</td>
+        <td>500,000원</td>
+        <td>2건</td>
+        <td>2,000,000원</td>
+    </tr>
+    <tr>
+        <td>2023-03-12</td>
+        <td>0건</td>
+        <td>100,000원</td>
+        <td>5건</td>
+        <td>300,000원</td>
+        <td>100,000원</td>
+        <td>4건</td>
+        <td>200,000원</td>
+    </tr>
+    <tr>
+        <td>2023-03-13</td>
+        <td>1건</td>
+        <td>170,000원</td>
+        <td>2건</td>
+        <td>200,000원</td>
+        <td>500,000원</td>
+        <td>5건</td>
+        <td>200,000원</td>
+    </tr>
+    <tr>
+        <td>2023-03-14</td>
+        <td>0건</td>
+        <td>170,000원</td>
+        <td>2건</td>
+        <td>400,000원</td>
+        <td>200,000원</td>
+        <td>0건</td>
+        <td>200,000원</td>
+    </tr>
+    <tr class="total">
+
+        <td>합계</td>
+        <td>0건</td>
+        <td>0원</td>
+        <td>0건</td>
+        <td>0원</td>
+        <td>0원</td>
+        <td>0건</td>
+        <td>0원</td>
+
+    </tr>
+</table>
+</body>
+</html>
+<script>
+    function calcSum() {
+
+        let table = document.getElementById('pay_sum');
+        let trcnt  = table.rows.length;
+        let tdcnt  = table.rows[2].cells.length;
+        let sum_result = 0;
+        let regex = /[^0-9]/g;
+
+        for (var i = 1; i < tdcnt; i++) {
+
+            let sum = 0;
+
+            for (var j = 2; j < trcnt - 1; j++) {
+                let val = table.rows[j].cells[i].innerHTML;
+                let result = val.replace(regex, "");
+
+                if (!isNaN(result)) {
+                    sum_result = Number(result)
+                    sum += sum_result;
+                }
+            }
+
+            let tdtxt = table.rows[j].cells[i].innerHTML;
+            table.rows[j].cells[i].innerHTML = tdtxt.replace(0, sum.toLocaleString("ko-KR"));
+        }
+    }
+
+
+    // 페이지에서만 사용하는 스크립트
+
+
+    calcSum();
+</script>

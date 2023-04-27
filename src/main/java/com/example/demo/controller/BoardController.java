@@ -114,4 +114,11 @@ public class BoardController {
 
     }
 
+    @RequestMapping("/chart/sum")
+    public String getCallSum(){
+
+        return "chart/call_sum";
+
+    }
+
 }

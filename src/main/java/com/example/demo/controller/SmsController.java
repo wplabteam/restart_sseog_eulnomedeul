@@ -30,6 +30,7 @@ public class SmsController {
 
         Map result = smsService.send(mbPhone, "본인확인을 위해 인증번호<br>[" + ranCertNo + "]를 입력해주세요.");
         if (result != null) {
+            // 세션에 인증번호 저장
             request.getSession().setAttribute(mbPhone, ranCertNo);
             return new JSONResponse<>(200, "SUCCESS", null);
         } else {

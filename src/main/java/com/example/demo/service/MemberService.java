@@ -16,6 +16,7 @@ public class MemberService {
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public void join(Member memberSaveDto) {
+        // 회원 정보 db 저장
         memberRepository.save(memberSaveDto);
     }
 
@@ -27,8 +28,11 @@ public class MemberService {
      */
     public Member login(String mbUserName, String mbPassword) {
 
+        // 1. 아이디가 있는지 확인
         Member member = memberRepository.findByMbUserName(mbUserName);
+        // 2. 아이디가 있으면 비밀번호 확인
         if (member != null) {
+            // 3. 비밀번호가 맞으면 member 리턴 아니면 null
             if (passwordEncoder.matches(mbPassword, member.getMbPassword())) {
                 return member;
             }

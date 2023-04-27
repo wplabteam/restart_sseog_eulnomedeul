@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.common.JSONResponse;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
-import com.example.demo.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -47,11 +44,15 @@ public class MemberController {
      */
     @PostMapping("/join/idChk")
     public ResponseEntity<?> checkId(@RequestBody Map<String, String> requestBody) {
+        // mbId를 받아서 중복체크
         String mbId = requestBody.get("mbId");
         Long checkId = memberRepository.countByMbUserName(mbId);
+
+        // checkId 가 0이 아니면 중복
         if (checkId != 0L) {
             return ResponseEntity.ok(Map.of("result", "fail"));
         } else {
+            // checkId 가 0이면 중복아님
             return ResponseEntity.ok(Map.of("result", "success"));
         }
     }
@@ -66,10 +67,12 @@ public class MemberController {
     @PostMapping("/join/write")
     public String joinProc(@ModelAttribute("memberSaveDto") Member memberSaveDto) {
 
+        // 비밀번호 암호화 처리
         memberSaveDto.setMbPassword(passwordEncoder.encode(memberSaveDto.getMbPassword()));
+        // 회원가입 처리
         memberService.join(memberSaveDto);
 
-        return "/member/login";
+        return "member/login";
     }
 
     /**
@@ -80,10 +83,10 @@ public class MemberController {
      */
 
     @RequestMapping("/member/login")
-    public String login(@RequestParam(name = "returnUrl", required = false) String returnUrl, Model model) {
-        model.addAttribute("memberSaveDto", new Member());
-        model.addAttribute("returnUrl", returnUrl);
-        return "/member/login";
+    public String login(Model model) {
+        Member member = new Member();
+        model.addAttribute("memberSaveDto", member);
+        return "member/login";
     }
 
     /**
@@ -104,9 +107,9 @@ public class MemberController {
             session.setAttribute("user", member);
             return "redirect:/";
         } else {
-            // 로그인 실패
+            // 로그인 실패시 메시지 전달
             model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "/member/login";
+            return "member/login";
         }
 
     }

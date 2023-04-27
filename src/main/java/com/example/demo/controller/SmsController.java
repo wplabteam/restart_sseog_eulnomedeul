@@ -28,7 +28,7 @@ public class SmsController {
     public JSONResponse<?> getPhoneCerNo(@RequestParam("mbPhone") String mbPhone, HttpServletRequest request) {
         String ranCertNo = smsService.getCertRandomNo(4, 2);
 
-        Map result = smsService.send(mbPhone, "제껴지게 하지말고 본인확인을 위해 인증번호<br>[" + ranCertNo + "]를 입력해주세요.");
+        Map result = smsService.send(mbPhone, "본인확인을 위해 인증번호<br>[" + ranCertNo + "]를 입력해주세요.");
         if (result != null) {
             request.getSession().setAttribute(mbPhone, ranCertNo);
             return new JSONResponse<>(200, "SUCCESS", null);
@@ -52,10 +52,10 @@ public class SmsController {
 
         String sessionCertNo = (String) request.getSession().getAttribute(mbPhone);
 
-        if (sessionCertNo == null) {
+        if (sessionCertNo == null) { // 세션에 인증번호가 없을 경우
             return new JSONResponse<>(500, "FAIL", null);
         }
-        if (sessionCertNo.equals(certNo)) {
+        if (sessionCertNo.equals(certNo)) { // 인증번호가 일치할 경우
             return new JSONResponse<>(200, "SUCCESS", null);
         }
 

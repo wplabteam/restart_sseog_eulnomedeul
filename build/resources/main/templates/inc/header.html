@@ -10,14 +10,14 @@
                     <li><a th:href="@{/blood/list}">혈당체크</a></li>
                     <li><a th:href="@{/board/notice/list}">공지사항</a></li>
                     <li><a th:href="@{/chart/sum}">합산</a></li>
-                    <li th:if="${session.user == null}"><a th:href="@{/member/join}">회원가입</a></li>
+                    <li th:if="${user == null}"><a th:href="@{/member/join}">회원가입</a></li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
-                <div th:if="${session.user != null}" class="navbar-text ms-3">
-                    <span th:text="${session.user.mbName}"></span>님 환영합니다.
+                <div th:if="${user!= null}" class="navbar-text ms-3">
+                    <span th:text="${user.mbPhone}"></span>님 환영합니다.
                     <a th:href="@{/member/logout}" class="ms-2">로그아웃</a>
                 </div>
                 <div th:if="${session.user == null}" class="navbar-text ms-3">

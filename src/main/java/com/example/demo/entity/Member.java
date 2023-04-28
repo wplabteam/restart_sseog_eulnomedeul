@@ -32,4 +32,6 @@ public class Member {
     private String mbAddress;
     // 회원 상세주소
     private String mbDetailAddress;
+    //PRINCIPAL_NAME
+    private String  sessionUsername;
 }

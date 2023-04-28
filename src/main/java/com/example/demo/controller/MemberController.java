@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -96,23 +97,45 @@ public class MemberController {
      * description    : 세션 로그인
      */
 
-    @PostMapping("/member/login")
-    public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model) {
+//    @PostMapping("/member/login")
+//    public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto, HttpSession session, Model model) {
+//
+//        // 로그인 정보 조회 (아이디, 비밀번호)
+//        Member member = memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword());
+//
+//        // 로그인 성공
+//        if (member != null) {
+//            session.setAttribute("user", member);
+//            return "redirect:/";
+//        } else {
+//            // 로그인 실패시 메시지 전달
+//            model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+//            return "member/login";
+//        }
+//
+//    }
 
-        // 로그인 정보 조회 (아이디, 비밀번호)
-        Member member = memberService.login(memberSaveDto.getMbUserName(), memberSaveDto.getMbPassword());
+    @PostMapping("/member/login")
+    public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto,  HttpServletRequest request, Model model) {
+
+        String userName = memberSaveDto.getMbUserName();
+        String password = memberSaveDto.getMbPassword();
+
+        Member member = memberService.login(userName, password);
 
         // 로그인 성공
         if (member != null) {
-            session.setAttribute("user", member);
+            // HttpSession 인터페이스를 이용해서  HttpServletReqeust 세션 객체를 가져온 다음 해당 세션 객체에 사용자 정보를 저장함
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", userName);
             return "redirect:/";
         } else {
             // 로그인 실패시 메시지 전달
             model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "member/login";
         }
-
     }
+
 
     /**
      * method         : logout

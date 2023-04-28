@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.Member;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -60,6 +61,8 @@ public class WebConfig implements WebMvcConfigurer {
     public class UserInterceptor extends HandlerInterceptorAdapter {
         private MemberService memberService;
 
+        private MemberRepository memberRepository;
+
         public UserInterceptor(MemberService memberService) {
             this.memberService = memberService;
         }
@@ -70,18 +73,26 @@ public class WebConfig implements WebMvcConfigurer {
          */
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-            HttpSession session = request.getSession();
-            Member member = (Member) session.getAttribute("user");
-            if (member == null) {
-                response.setContentType("text/html; charset=UTF-8");
+            HttpSession session = request.getSession(false);
+//            Member member = (Member) session.getAttribute("user");
+
+            if (session != null) {
+                Member member = (Member) session.getAttribute("user");
+                if (member != null) {
+                    request.setAttribute("user", member);
+                }
+            } else {
+                if (session == null)
+                    response.setContentType("text/html; charset=UTF-8");
                 PrintWriter out = response.getWriter();
                 String msg = "로그인이 필요합니다.";
                 String url = "/member/login";
                 out.println("<script>location.href='/common/modal?msg=" + msg + ".&url= " + url + "';</script>");
                 return false;
-            } else {
-                return true;
             }
+
+            return true;
+
         }
 
     }

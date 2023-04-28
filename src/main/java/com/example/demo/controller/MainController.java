@@ -4,6 +4,7 @@ import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,28 +25,24 @@ public class MainController {
      * description    : 메인 페이지 스프링세션 사용
      */
     @RequestMapping("/")
-    public String main(HttpServletRequest request, Model model) {
-        //getSession(false) 메소드를 사용하면 세션이 없을 경우에도 새로운 세션을 생성하지 않습니다.
-        HttpSession session = request.getSession(false);
-        String username = null;
-        // 세션이 존재하면 username을 가져온다.
-        if (session != null) {
-            username = (String) session.getAttribute("user");
-            // username이 존재하면 user에 username을 담아준다.
-            if (username != null) {
-                Member member = memberRepository.findByMbUserName(username);
-                System.out.println("member = " + member);
-                model.addAttribute("user", member);
-            } else {
-                // 사용자 정보가 존재하지 않은 경우
-                session.invalidate(); // 세션 무효화
-                return "redirect:member/login";
-            }
+    public String main(HttpSession session, Model model) {
+
+        Member member = (Member) session.getAttribute("user");
+
+        if (member != null) {
+            model.addAttribute("user", member);
+            return "main/main";
         } else {
-            model.addAttribute("user", null);
+            session.invalidate(); // 세션 무효화
+            return "redirect:member/login";
         }
-        return "/main/main";
     }
+
+
+
+
+
+
 
 //    /**
 //     * method         : main

@@ -53,15 +53,19 @@ public class BoardController {
      * description    : 공지사항 작성
      */
     @PostMapping("/board/notice/write")
-    public String noticeWrite(HttpSession request, Model model, NoticeSaveDto noticeSaveDto, @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
+    public String noticeWrite(HttpSession session, NoticeSaveDto noticeSaveDto, @RequestPart(value = "file", required = false) MultipartFile file) throws Exception {
 
-        Member user = (Member) request.getAttribute("user");
 
-        noticeSaveDto.setMbUserName(user.getMbUserName());
+        Member member = (Member) session.getAttribute("user");
+
+        noticeSaveDto.setMbUserName(member.getMbUserName());
+
+        // 파일이 있으면 파일을 저장하고 파일 시퀀스를 noticeSaveDto에 담아준다.
         if (!file.isEmpty()) {
             noticeSaveDto.setFileSeq(fileService.saveFile(file));
             noticeService.saveNotice(noticeSaveDto);
         } else {
+            // 파일이 없으면 그냥 저장한다.
             noticeService.saveNotice(noticeSaveDto);
         }
 

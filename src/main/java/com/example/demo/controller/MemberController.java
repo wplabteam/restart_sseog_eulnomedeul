@@ -115,6 +115,13 @@ public class MemberController {
 //
 //    }
 
+
+    /**
+     * method         : loginProc
+     * author         : 오동준
+     * date           : 2023/04/28
+     * description    : 스프링세션 로그인
+     */
     @PostMapping("/member/login")
     public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto,  HttpServletRequest request, Model model) {
 
@@ -127,7 +134,9 @@ public class MemberController {
         if (member != null) {
             // HttpSession 인터페이스를 이용해서  HttpServletReqeust 세션 객체를 가져온 다음 해당 세션 객체에 사용자 정보를 저장함
             HttpSession httpSession = request.getSession();
-            httpSession.setAttribute("user", userName);
+            // 세션에 사용자 정보 저장
+            Member sessionMember = memberRepository.findByMbUserName(userName);
+            httpSession.setAttribute("user", sessionMember);
             return "redirect:/";
         } else {
             // 로그인 실패시 메시지 전달

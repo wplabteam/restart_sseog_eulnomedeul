@@ -17,7 +17,7 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <div th:if="${user!= null}" class="navbar-text ms-3">
-                    <span th:text="${user.mbPhone}"></span>님 환영합니다.
+                    <span th:text="${user.mbName}"></span>님 환영합니다.
                     <a th:href="@{/member/logout}" class="ms-2">로그아웃</a>
                 </div>
                 <div th:if="${session.user == null}" class="navbar-text ms-3">

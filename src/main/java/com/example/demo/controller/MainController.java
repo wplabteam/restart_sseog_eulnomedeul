@@ -34,6 +34,7 @@ public class MainController {
             // username이 존재하면 user에 username을 담아준다.
             if (username != null) {
                 Member member = memberRepository.findByMbUserName(username);
+                System.out.println("member = " + member);
                 model.addAttribute("user", member);
             } else {
                 // 사용자 정보가 존재하지 않은 경우

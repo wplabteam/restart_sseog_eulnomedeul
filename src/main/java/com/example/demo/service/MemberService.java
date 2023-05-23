@@ -1,9 +1,15 @@
 package com.example.demo.service;
 
 
+import com.example.demo.dto.MemberListDto;
 import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.notice.repository.NoticeRepository;
+import com.example.demo.notice.repository.member.MemberRepository;
+import com.example.demo.notice.repository.member.MemberRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -14,6 +20,7 @@ import javax.transaction.Transactional;
 public class MemberService {
     private final MemberRepository memberRepository;
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final NoticeRepository noticeRepository;
 
     public void join(Member memberSaveDto) {
         // 회원 정보 db 저장
@@ -38,6 +45,11 @@ public class MemberService {
             }
         }
         return null;
+    }
+
+    public Page<MemberListDto> memberList(Pageable pageable) {
+        Page<MemberListDto> memberList = memberRepository.memberList(pageable);
+        return memberList;
     }
 }
 

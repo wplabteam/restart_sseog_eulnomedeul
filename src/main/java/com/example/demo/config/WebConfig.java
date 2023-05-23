@@ -1,11 +1,10 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.notice.repository.member.MemberRepository;
 import com.example.demo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

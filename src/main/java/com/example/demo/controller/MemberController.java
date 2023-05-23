@@ -1,10 +1,19 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.MemberListDto;
+import com.example.demo.dto.PageDto;
 import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.notice.repository.member.MemberRepository;
 import com.example.demo.service.MemberService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.jpa.HibernateEntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,8 +21,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import javax.xml.transform.Result;
+import java.awt.print.Pageable;
 import java.util.Map;
 
 
@@ -23,6 +36,9 @@ import java.util.Map;
 public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+
+    @Autowired
+    private final EntityManager entityManager;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -123,6 +139,7 @@ public class MemberController {
      * description    : 스프링세션 로그인
      */
     @PostMapping("/member/login")
+    @Transactional
     public String loginProc(@ModelAttribute("memberSaveDto") Member memberSaveDto,  HttpServletRequest request, Model model) {
 
         String userName = memberSaveDto.getMbUserName();
@@ -137,6 +154,23 @@ public class MemberController {
             // 세션에 사용자 정보 저장
             Member sessionMember = memberRepository.findByMbUserName(userName);
             httpSession.setAttribute("user", sessionMember);
+
+            System.out.println(sessionMember + "sessionMember");
+            // 회원 정보에서 회원 아이디 가져옴
+            String memberId = sessionMember.getMbUserName();
+            System.out.println(  "memberId  1: " + memberId);
+            System.out.println(  "httpSession.getId() : " + httpSession.getId());
+
+
+            Session session = entityManager.unwrap(HibernateEntityManager.class).getSession();
+
+            System.out.println(  "memberId :2 " + memberId) ;
+            int result =   session.createSQLQuery(" UPDATE SPRING_SESSION SET PRINCIPAL_NAME = :PRINCIPAL_NAME WHERE SESSION_ID = :SESSION_ID ")
+                    .setParameter("PRINCIPAL_NAME", memberId)
+                    .setParameter("SESSION_ID", httpSession.getId())
+                    .executeUpdate();
+            System.out.println("result = " + result);
+
             return "redirect:/";
         } else {
             // 로그인 실패시 메시지 전달
@@ -159,5 +193,37 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+        private String msg;
+        private String code;
+        private Long total;
+    }
+
+
+    @PostMapping("/member/api/list")
+    @ResponseBody
+    public Result memberList(PageDto memberPageDto){
+
+        if(memberPageDto.getPage() == null){
+            memberPageDto.setPage(0);
+        }
+        if(memberPageDto.getSize() == null){
+            memberPageDto.setSize(5);
+        }
+
+        PageRequest pagerRequest = PageRequest.of(memberPageDto.getPage(), 2);
+        Page<MemberListDto> memberList = memberService.memberList(pagerRequest);
+        long total = memberList.getTotalElements(); // 총 회원 수
+
+        System.out.println("memberList = " + memberList.getTotalElements());
+
+
+
+
+        return new Result(memberList , "SUCCESS" , "200", total);
+    }
 
 }

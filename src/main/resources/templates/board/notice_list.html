@@ -54,6 +54,7 @@
     .write-btn:hover {
         background-color: #0069d9;
     }
+
     .list-searchbox {
         display: flex;
         justify-content: flex-end;
@@ -88,7 +89,7 @@
     <th:block th:replace="inc/header :: header"></th:block>
 </header>
 <table class="notice-board">
-<!--    <caption>공지사항</caption>-->
+    <!--    <caption>공지사항</caption>-->
     <thead>
     <tr>
         <th colspan="5">공지사항
@@ -131,15 +132,158 @@
     </th:block>
 
     </tbody>
+
 </table>
+<h3>회원 리스트</h3>
+<table>
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>나이</th>
+    </tr>
+    </thead>
+    <tbody id="memberList">
+    <!--    <tr>-->
+    <!--        <td>회원 1</td>-->
+    <!--        <td>25</td>-->
+    <!--        <td>남성</td>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <td>회원 2</td>-->
+    <!--        <td>30</td>-->
+    <!--        <td>여성</td>-->
+    <!--    </tr>-->
+    <!-- 다른 회원 정보 추가 -->
+    </tbody>
+</table>
+<div>
+    <ul class="pagination" id="pagination">
+        <!--        <li class="page-item"><a class="page-link" href="#">맨 처음</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">이전</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">다음</a></li>-->
+        <!--        <li class="page-item"><a class="page-link" href="#">맨 끝</a></li>-->
+    </ul>
+</div>
 
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    // document.addEventListener("DOMContentLoaded", ()=>{
+    //     const list = *[[${noticeList}]]*/[];
+    //     console.log(list);
+    // })
     document.getElementById("frmSearch").onsubmit = function () {
-        if (document.getElementById("keyWord").value === ""){
+        if (document.getElementById("keyWord").value === "") {
             alert("검색어를 입력해주세요.");
             return false;
         }
+    }
+
+    var page = 0;
+    var size = 2;
+    var i = 0;
+
+    function memberList() {
+
+        page = 0;
+        let formData = new FormData();
+        formData.append("page", page);
+        formData.append("size", size);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/member/api/list",
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                memberListPrint(data.data.content);
+
+                getPageNation(data.total);
+            }
+        })
+    }
+
+    function pageMove(p) {
+        page = Number(p);
+        let formData = new FormData();
+        formData.append("page", page);
+        formData.append("size", size);
+
+        $.ajax({
+            type: "POST",
+            url: "/member/api/list",
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+
+                memberListPrint(data.data.content);
+
+                getPageNation(data.total);
+            }
+        })
+    }
+
+
+    function memberListPrint(data) {
+        let HTML = "";
+        data.forEach(function (v) {
+            HTML += `<tr><td>` + v.mbName + `</td> <td>` + v.mbUserName + `</td>`
+        });
+        document.getElementById("memberList").innerHTML = HTML;
+
+    }
+
+
+    function getPageNation(total) {
+        let totalPage = Math.ceil(total / size);
+        let startPage = Math.floor(page / 10) * 10;
+
+        let endPage = startPage + 10;
+        if (endPage > totalPage) {
+            endPage = totalPage;
+        }
+        let HTML = "";
+        if (page > 0) {
+            HTML += `<li class="page-item">
+                        <a class="page-link" href="#" onclick="pageMove('` + (page - 1) + `')">이전</a>
+                     </li>`;
+        }
+
+
+        for (i = startPage; i < endPage; i++) {
+            if (i == page) {
+                HTML += `<li class="page-item active">
+                            <a class="page-link" href="#" onclick="pageMove('` + i + `')">` + (i + 1) + `</a>
+                         </li>`;
+            } else {
+                HTML += `<li class="page-item">
+                            <a class="page-link" href="#" onclick="pageMove('` + i + `')">` + (i + 1) + `</a>
+                         </li>`;
+            }
+        }
+
+        if (page < totalPage -1) {
+            HTML += `
+                <li class="page-item">
+                    <a class="page-link" href="#" onclick="pageMove(${page + 1})">다음</a>
+                </li>`;
+        }
+        console.log("page : "+page)
+
+        $("#pagination").html(HTML);
+    }
+
+    window.onload = function () {
+        memberList();
     }
 </script>

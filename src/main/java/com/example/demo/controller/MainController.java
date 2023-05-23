@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.notice.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller

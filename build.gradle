@@ -42,6 +42,10 @@ dependencies {
 
 	implementation 'org.springframework.session:spring-session-jdbc:2.5.1'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	//벨리데이트 체크 (정규식)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
